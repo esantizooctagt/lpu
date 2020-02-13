@@ -13,6 +13,8 @@ ion-card-subtitle{
 }
 ion-card-title{
     font-size: small;
+    color: darkgray;
+    font-family: 'Bebas Neue';
 }
 ion-card{
     margin-left: 8px;
@@ -40,6 +42,7 @@ ion-card{
 .icon-shared {
     color: #3CC0FD;
     padding-left: 15px;
+    // cursor: pointer;
 }
 .icon-text{
     display: inline-block;
@@ -56,6 +59,7 @@ ion-card{
 }
 .ion-subtitle-link{
     text-transform: lowercase;
+    // cursor: pointer;
 }
 .ion-subtitle-pais{
     text-transform: capitalize;

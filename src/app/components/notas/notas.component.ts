@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { LoadingController } from '@ionic/angular';
 import { NotasService } from '@services/notas.service';
-import { InAppBrowser, InAppBrowserOptions } from '@ionic-native/in-app-browser';
+import { InAppBrowser, InAppBrowserOptions } from '@ionic-native/in-app-browser/ngx';
+import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 
 @Component({
   selector: 'app-notas',
@@ -13,28 +14,29 @@ export class NotasComponent implements OnInit {
   notas;
   loading: any;
 
-//   options : InAppBrowserOptions = {
-//     location : 'yes',//Or 'no' 
-//     hidden : 'no', //Or  'yes'
-//     clearcache : 'yes',
-//     clearsessioncache : 'yes',
-//     zoom : 'yes',//Android only ,shows browser zoom controls 
-//     hardwareback : 'yes',
-//     mediaPlaybackRequiresUserAction : 'no',
-//     shouldPauseOnSuspend : 'no', //Android only 
-//     closebuttoncaption : 'Close', //iOS only
-//     disallowoverscroll : 'no', //iOS only 
-//     toolbar : 'yes', //iOS only 
-//     enableViewportScale : 'no', //iOS only 
-//     allowInlineMediaPlayback : 'no',//iOS only 
-//     presentationstyle : 'pagesheet',//iOS only 
-//     fullscreen : 'yes',//Windows only    
-// };
+  options : InAppBrowserOptions = {
+    location : 'yes',//Or 'no' 
+    hidden : 'no', //Or  'yes'
+    clearcache : 'yes',
+    clearsessioncache : 'yes',
+    zoom : 'yes',//Android only ,shows browser zoom controls 
+    hardwareback : 'yes',
+    mediaPlaybackRequiresUserAction : 'no',
+    shouldPauseOnSuspend : 'no', //Android only 
+    closebuttoncaption : 'Close', //iOS only
+    disallowoverscroll : 'no', //iOS only 
+    toolbar : 'yes', //iOS only 
+    enableViewportScale : 'no', //iOS only 
+    allowInlineMediaPlayback : 'no',//iOS only 
+    presentationstyle : 'pagesheet',//iOS only 
+    fullscreen : 'yes',//Windows only    
+};
 
   constructor(
     private notasService: NotasService,
     public loadingController: LoadingController,
-    private iab: InAppBrowser
+    private iab: InAppBrowser,
+    private socialSharing: SocialSharing
     ) { }
 
   async ngOnInit() {
@@ -101,5 +103,23 @@ export class NotasComponent implements OnInit {
 
   OpenUrl(link: string){
     this.iab.create(link, '_blank', this.options);
+  }
+
+  SharedLink(id: string){
+    let nota = this.notas.filter(x => x.NotaId === id);
+    var options = {
+      message: 'Te han compartido la siguiente nota : ' + nota[0].Titulo, // not supported on some apps (Facebook, Instagram)
+      subject: nota[0].Titulo, // fi. for email
+      //files: ['', ''], // an array of filenames either locally or remotely
+      url: nota[0].UrlLink,
+      //chooserTitle: 'Pick an app', // Android only, you can override the default share sheet title
+      //appPackageName: 'com.apple.social.facebook', // Android only, you can provide id of the App you want to share with
+      iPadCoordinates: '0,0,0,0' //IOS only iPadCoordinates for where the popover should be point.  Format with x,y,width,height
+    };
+    this.socialSharing.shareWithOptions(options).then((res) => {
+      console.log(res);
+    }).catch((e) =>{
+      console.log(e.message);
+    })
   }
 }

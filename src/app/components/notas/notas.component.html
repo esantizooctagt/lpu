@@ -30,7 +30,7 @@
           <span class="icon-text space-text">{{ nota.Ranking }}</span>
         </ion-col>
         <ion-col class="ion-no-padding" size="2">
-          <ion-icon class="icon icon-shared" src="/assets/img/share-social.svg"></ion-icon>
+          <ion-icon class="icon icon-shared" src="/assets/img/share-social.svg" (click)="SharedLink(nota.NotaId);"></ion-icon>
         </ion-col>
       </ion-row>
     </ion-card-content>
