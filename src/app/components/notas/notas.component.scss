@@ -1,0 +1,62 @@
+ion-icon {
+    font-size: 24px;
+}
+ion-card-content{
+    padding: 8px 8px 8px 8px;
+}
+ion-card-header {
+    padding: 0;
+}
+ion-card-subtitle{
+    padding-top: 15px;
+    color: #3CC0FD;
+}
+ion-card-title{
+    font-size: small;
+}
+ion-card{
+    margin-left: 8px;
+    margin-right: 8px;
+    border-radius: 4px;
+    margin-bottom: 12px;
+    margin-top: 12px;
+}
+.card-category{
+    top:0px;
+    position: absolute;
+    left:0px;
+    color: white;
+    min-width: 100px;
+    text-transform: uppercase;
+    padding-left: 9px;
+}
+.card-actions{
+    padding-top: 10px;
+    text-align: left;
+}
+.icon-fire {
+    color: red;
+}
+.icon-shared {
+    color: #3CC0FD;
+    padding-left: 15px;
+}
+.icon-text{
+    display: inline-block;
+    vertical-align: middle;
+}
+.icon{
+    display: inline-block;
+    font-size: 24px;
+    //color: #ffC977;
+    vertical-align: middle;
+}
+.space-text{
+    padding-left: 5px;
+}
+.ion-subtitle-link{
+    text-transform: lowercase;
+}
+.ion-subtitle-pais{
+    text-transform: capitalize;
+}

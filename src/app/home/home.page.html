@@ -1,0 +1,50 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title class="title-img">
+      <ion-img class="header-title-logo" src="/assets/img/resize.png"></ion-img>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-img class="header-background" src="/assets/img/header.jpg"></ion-img>
+  <ion-img class="header-logo" src="/assets/img/logo_header.png"></ion-img>
+  <ion-segment>
+    <ion-segment-button value="pais">
+      <ion-label>PAIS</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="region">
+      <ion-label>REGION</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="mundial">
+      <ion-label>MUNDIAL</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+  
+  <app-notas></app-notas>
+
+  <ion-list lines="none">
+    <ion-list-header>
+      <ion-label>Resources</ion-label>
+    </ion-list-header>
+    <ion-item href="https://ionicframework.com/docs/">
+      <ion-icon slot="start" color="medium" name="book"></ion-icon>
+      <ion-label>Ionic Documentation</ion-label>
+    </ion-item>
+    <ion-item href="https://ionicframework.com/docs/building/scaffolding">
+      <ion-icon slot="start" color="medium" name="build"></ion-icon>
+      <ion-label>Scaffold Out Your App</ion-label>
+    </ion-item>
+    <ion-item href="https://ionicframework.com/docs/layout/structure">
+      <ion-icon slot="start" color="medium" name="grid"></ion-icon>
+      <ion-label>Change Your App Layout</ion-label>
+    </ion-item>
+    <ion-item href="https://ionicframework.com/docs/theming/basics">
+      <ion-icon slot="start" color="medium" name="color-fill"></ion-icon>
+      <ion-label>Theme Your App</ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

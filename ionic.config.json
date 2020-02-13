@@ -1,0 +1,7 @@
+{
+  "name": "lpu",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}
