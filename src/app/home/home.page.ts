@@ -6,7 +6,13 @@ import { Component } from '@angular/core';
   styleUrls: ['home.page.scss']
 })
 export class HomePage {
-
+  searchDisp: boolean = false;
   constructor() {}
 
+  displaySearch(){
+    this.searchDisp = !this.searchDisp;
+  }
+  hideSearch(){
+    this.searchDisp = false;
+  }
 }

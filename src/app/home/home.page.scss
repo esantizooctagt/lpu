@@ -1,3 +1,21 @@
+ion-segment{
+  --background: url('/assets/img/header.jpg');
+  height: 44px;
+}
+ion-segment-button{
+  //font-size: 16px;
+  //color: var(--ion-color-medium);
+  background: var(--ion-color-primary);
+  color: white;
+  border: 0px;
+  border-radius: 0px;
+}
+ion-searchbar{
+  --color	:white;
+}
+.segment-button-checked{
+  border-bottom: 3px solid #3CC0FD;
+}
 .welcome-card img {
   max-height: 35vh;
   overflow: hidden;
@@ -23,20 +41,6 @@
   bottom: 0;
   text-align:center;
 }
-ion-segment{
-  --background: url('/assets/img/header.jpg');
-  height: 44px;
-}
-ion-segment-button{
-  //font-size: 16px;
-  //color: var(--ion-color-medium);
-  background: var(--ion-color-primary);
-  color: white;
-  border: 0px;
-  border-radius: 0px;
-}
-.segment-button-checked{
-  //background: #FFF;
-  //color: var(--ion-color-primary);
-  border-bottom: 3px solid #3CC0FD;
+.icon{
+  background-color: white;
 }

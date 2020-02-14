@@ -6,7 +6,16 @@
     <ion-title class="title-img">
       <ion-img class="header-title-logo" src="/assets/img/resize.png"></ion-img>
     </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="displaySearch()">
+        <ion-icon slot="icon-only" src="/assets/img/search-circle.svg"></ion-icon>
+      </ion-button>
+      <ion-button [routerDirection]="'forward'" [routerLink]="['/login']">
+        <ion-icon slot="icon-only" src="/assets/img/person-circle.svg"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
+  <ion-searchbar mode="ios" placeholder="Buscar" cancelButtonText="Cerrar" *ngIf="searchDisp" showCancelButton="always" debounce="500" (ionCancel)="hideSearch()"></ion-searchbar>
 </ion-header>
 
 <ion-content>
@@ -26,7 +35,7 @@
   
   <app-notas></app-notas>
 
-  <ion-list lines="none">
+  <!-- <ion-list lines="none">
     <ion-list-header>
       <ion-label>Resources</ion-label>
     </ion-list-header>
@@ -46,5 +55,5 @@
       <ion-icon slot="start" color="medium" name="color-fill"></ion-icon>
       <ion-label>Theme Your App</ion-label>
     </ion-item>
-  </ion-list>
+  </ion-list> -->
 </ion-content>

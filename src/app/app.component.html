@@ -3,14 +3,17 @@
     <ion-menu contentId="main-content" type="overlay">
       <ion-header>
         <ion-toolbar>
-          <ion-title>Menu</ion-title>
+          <ion-title class="title-img">
+            <ion-img class="header-title-logo" src="/assets/img/resize.png"></ion-img>
+          </ion-title>
         </ion-toolbar>
       </ion-header>
       <ion-content>
         <ion-list>
           <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages">
             <ion-item [routerDirection]="'root'" [routerLink]="[p.url]">
-              <ion-icon slot="start" [name]="p.icon"></ion-icon>
+              <!-- <ion-icon slot="start" [name]="p.icon"></ion-icon> -->
+              <div class="menu-badge" [ngStyle]="{'background-color': p.color}"></div>
               <ion-label>
                 {{p.title}}
               </ion-label>
