@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '@environments/environment';
 import { catchError } from 'rxjs/operators';
@@ -15,6 +15,11 @@ export class NotasService {
 
   getNotas(searchValue): Observable<any> {
     return this.http.get<any>(this.apiURL + '/busqueda/?buscando=' + searchValue)
+                    .pipe(catchError(this.errorHandler));
+  }
+
+  getNotasFiltros(tipo, categoria, pais): Observable<any>{
+    return this.http.get<any>(this.apiURL + '/noticias/?tipo='+tipo+'&categoria='+categoria+'&pais=1')
                     .pipe(catchError(this.errorHandler));
   }
 

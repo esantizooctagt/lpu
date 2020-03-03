@@ -1,0 +1,36 @@
+<!-- <ion-menu [style.display]="'none'" side="end" contentId="mainContent" menuId="slidingMenu" id="slidingMenu">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>{{(menu?.details | async)?.chat?.name}}</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+
+    <ion-list>
+      <ion-item *ngFor="let link of (menu?.details | async)?.links" detail (click)="navToPage(link)">{{link?.title}}
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+ -->
+<ion-menu contentId="main-content" menuId="mainMenu" id="mainMenu" type="overlay">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title class="title-img">
+        <ion-img class="header-title-logo" src="/assets/img/resize.png"></ion-img>
+      </ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-list>
+      <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages">
+        <ion-item [routerDirection]="'root'" [routerLink]="[p.url, p.section]">
+          <div class="menu-badge" [ngStyle]="{'background-color': p.color}"></div>
+          <ion-label>
+            {{p.title}}
+          </ion-label>
+        </ion-item>
+      </ion-menu-toggle>
+    </ion-list>
+  </ion-content>
+</ion-menu>

@@ -7,6 +7,7 @@ import { RouterModule } from '@angular/router';
 import { HomePage } from './home.page';
 import { NotasComponent } from '@components/notas/notas.component';
 
+
 @NgModule({
   imports: [
     CommonModule,

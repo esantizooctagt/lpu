@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title slot="start">
+      <ion-img class="header-title-logo" src="/assets/img/resize.png"></ion-img>
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button size="small" fill="solid" color="secondary" class="ion-text-capitalize" [routerLink]="['/login']">
+        Log In
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-text color="light">
+    <h1 class="title-preferences">Acerca de que le gustaria leer?</h1>
+  </ion-text>
+  <form [formGroup]="prefForm" *ngIf="(categories$ | async) || displayForm">
+    <ng-container formArrayName="Preferences" *ngFor="let cat of prefForm.get('Preferences').controls; let i = index">
+      <ng-container [formGroupName]="i">
+        <ion-chip [id]="cat.value.CategoryId" class="chip-preference" [ngClass]="{'chip-color': cat.value.Sel === 0, 'chip-sel-color': cat.value.Sel === 1 }" (click)="selectedPref(i)">
+          <ion-label color="light" class="ion-text-uppercase">{{ cat.value.Nombre }}</ion-label>
+        </ion-chip>
+      </ng-container>
+    </ng-container>
+  </form>
+</ion-content>
+<ion-footer>
+	<ion-toolbar position="bottom" class="footer-preference">
+    <ion-button expand="full" class="ion-text-capitalize" [disabled]="botonColor === 0" [color]="botonColor === 0 ? 'primary' : 'secondary'" (click)="setPreferences()">Seleccione 3 para continuar</ion-button>
+  </ion-toolbar>
+</ion-footer>

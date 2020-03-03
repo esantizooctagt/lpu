@@ -1,0 +1,37 @@
+.header-title-logo{
+    display: inline-block;
+    height: 40px;
+}
+.title-img {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    bottom: 0;
+    padding-top:3px;
+    text-align:left;
+}
+.title-preferences{
+    font-weight: 700;
+}
+.footer-preference{
+    --background: black;
+}
+.chip-preference{
+    border-radius: 5px;
+}
+.chip-color{
+    --background: gray;
+}
+.chip-sel-color{
+    --background: #3CC0FD;
+}
+ion-content{
+    --background: black;
+    --padding-start: 15px;
+    --padding-end: 10px;
+}
+ion-chip{
+    margin-right: 15px;
+    margin-bottom: 7px;
+    margin-top: 7px;
+}

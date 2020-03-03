@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, SimpleChange } from '@angular/core';
 import { LoadingController } from '@ionic/angular';
 import { NotasService } from '@services/notas.service';
 import { InAppBrowser, InAppBrowserOptions } from '@ionic-native/in-app-browser/ngx';
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
+import { map, filter, catchError } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
 
 @Component({
   selector: 'app-notas',
@@ -10,9 +12,13 @@ import { SocialSharing } from '@ionic-native/social-sharing/ngx';
   styleUrls: ['./notas.component.scss'],
 })
 export class NotasComponent implements OnInit {
+  @Input() search: string;
+  @Input() loc: string;
+  @Input() sec: string;
 
-  notas;
+  notas$ : Observable<any>;
   loading: any;
+  error: string = '';
 
   options : InAppBrowserOptions = {
     location : 'yes',//Or 'no' 
@@ -39,36 +45,13 @@ export class NotasComponent implements OnInit {
     private socialSharing: SocialSharing
     ) { }
 
-  async ngOnInit() {
-    await this.presentLoading();
-    this.notasService.getNotas('').subscribe((data) => {
-      let result = JSON.stringify(data).replace(',"error":false','');
-      let values = JSON.parse(result);
-
-      let valores =[];
-      for (const key of Object.keys(values)) {
-        const resultado  =  {
-          NotaId: values[key].col_id,
-          Pais: values[key].col_pais,
-          Titulo: values[key].col_titulo,
-          UrlFuente: values[key].col_url_fuente.split('/')[2],
-          UrlLink: values[key].col_url_fuente,
-          UrlImage: (values[key].col_url_img == '' ? '' : 'https://www.laprensa.hn'+ values[key].col_url_img),
-          CatColor: this.getColor(values[key].col_cat_id),
-          Categoria: values[key].col_categoria,
-          Ranking: values[key].col_ranking,
-          Fecha: values[key].col_fecha_publicacion.split(' ')[0]
-        }
-        valores.push(resultado);
-      }
-      this.notas = valores;
-      this.loading.dismiss();
-    })
+  ngOnInit() {
   }
 
   async presentLoading() {
     this.loading = await this.loadingController.create({
-      message: 'Cargando Notas...'
+      message: 'Cargando Notas...',
+      duration: 3000
     });
     await this.loading.present();
   }
@@ -106,7 +89,7 @@ export class NotasComponent implements OnInit {
   }
 
   SharedLink(id: string){
-    let nota = this.notas.filter(x => x.NotaId === id);
+    let nota = this.notas$.pipe(filter(x => x.NotaId === id));
     var options = {
       message: 'Te han compartido la siguiente nota : ' + nota[0].Titulo, // not supported on some apps (Facebook, Instagram)
       subject: nota[0].Titulo, // fi. for email
@@ -122,4 +105,84 @@ export class NotasComponent implements OnInit {
       console.log(e.message);
     })
   }
+
+  trackById(index: number, item: any) {
+    return item.NotaId;
+  }
+
+  async ngOnChanges(changes: {[propertyName: string]: SimpleChange}){
+    if (changes['search'] != undefined){
+      await this.presentLoading();
+      this.notas$ = this.notasService.getNotas(this.search).pipe(
+        map(data => {
+          let result = JSON.stringify(data).replace(',"error":false','');
+          let values = JSON.parse(result);
+          let valores =[];
+          for (const key of Object.keys(values)) {
+            const resultado  =  {
+              NotaId: values[key].col_id,
+              Pais: values[key].col_pais,
+              Titulo: values[key].col_titulo,
+              UrlFuente: values[key].col_url_fuente.split('/')[2],
+              UrlLink: values[key].col_url_fuente,
+              UrlImage: (values[key].col_url_img == '' ? '' : 'https://www.laprensa.hn'+ values[key].col_url_img),
+              CatColor: this.getColor(values[key].col_cat_id),
+              Categoria: values[key].col_categoria,
+              Ranking: values[key].col_ranking,
+              Fecha: values[key].col_fecha_publicacion.split(' ')[0]
+            }
+            valores.push(resultado);
+          }
+          this.loading.dismiss();
+          if (valores.length === 0){
+            this.error = "No data found";
+          }
+          return valores;
+        }),
+        catchError(err => {
+          this.loading.dismiss();
+          this.error = err.message;
+          return throwError(err | err.message);
+        })
+      );
+    }
+
+    if (changes['sec'] != undefined || changes['loc'] != undefined){
+      await this.presentLoading();
+      this.notas$ = this.notasService.getNotasFiltros((this.loc == null ? '' : this.loc), (this.sec == null ? '': this.sec), "").pipe(
+        map(data => {
+          let result = JSON.stringify(data).replace(',"error":false','');
+          let result2 = result.replace('"error":false','');
+          let values = JSON.parse(result2);
+          let valores =[];
+          for (const key of Object.keys(values)) {
+            const resultado  =  {
+              NotaId: values[key].col_id,
+              Pais: values[key].col_pais,
+              Titulo: values[key].col_titulo,
+              UrlFuente: values[key].col_url_fuente.split('/')[2],
+              UrlLink: values[key].col_url_fuente,
+              UrlImage: (values[key].col_url_img == '' ? '' : 'https://www.laprensa.hn'+ values[key].col_url_img),
+              CatColor: this.getColor(values[key].col_cat_id),
+              Categoria: values[key].col_categoria,
+              Ranking: values[key].col_ranking,
+              Fecha: values[key].col_fecha_publicacion.split(' ')[0]
+            }
+            valores.push(resultado);
+          }
+          this.loading.dismiss();
+          if (valores.length === 0){
+            this.error = "No data found";
+          }
+          return valores;
+        }),
+        catchError(err => {
+          this.loading.dismiss();
+          this.error = err.message;
+          return throwError(err | err.message);
+        })
+      );
+    }
+  }
+
 }

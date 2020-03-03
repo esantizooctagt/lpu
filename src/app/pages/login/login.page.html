@@ -1,9 +1,28 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>login</ion-title>
+  <ion-toolbar color="primary">
+    <ion-title>Log In</ion-title>
+    <ion-buttons slot="end">
+      <ion-button size="small" fill="solid" color="secondary" class="ion-text-capitalize" [routerLink]="['/register']">
+        Register
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-
+<ion-content fullscreen>
+  <form [formGroup]="loginForm">
+    <ion-list lines="full" class="ion-no-margin ion-no-padding">
+      <ion-item>
+        <ion-label position="stacked">Email <ion-text color="danger">*</ion-text></ion-label>
+        <ion-input type="email" formControlName="Email" required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Password <ion-text color="danger">*</ion-text></ion-label>
+        <ion-input type="password" formControlName="Password" required></ion-input>
+      </ion-item>
+    </ion-list>
+    <div class="ion-padding">
+      <ion-button color="secondary" expand="block" type="submit" (click)="onSubmit()" class="btn btn-secondary ion-no-margin" [disabled]="!loginForm.valid">Log In</ion-button>
+    </div>
+  </form>
 </ion-content>

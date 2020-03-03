@@ -1,5 +1,5 @@
-<ion-grid class="ion-no-padding">
-  <ion-card class="welcome-card" *ngFor="let nota of notas">
+<ion-grid class="ion-no-padding" *ngIf="error == ''">
+  <ion-card class="welcome-card" *ngFor="let nota of notas$ | async; trackBy: trackById">
     <div class="card-category" [ngStyle]="{'background-color': nota.CatColor}">{{nota.Categoria}}</div>
     <img *ngIf="nota.UrlImage != ''" [src]="nota.UrlImage" alt="" />
     <ion-card-content>
@@ -32,6 +32,13 @@
           <ion-icon class="icon icon-shared" src="/assets/img/share-social.svg" (click)="SharedLink(nota.NotaId);"></ion-icon>
         </ion-col>
       </ion-row>
+    </ion-card-content>
+  </ion-card>
+</ion-grid>
+<ion-grid class="ion-no-padding" *ngIf="error != ''">
+  <ion-card>
+    <ion-card-content>
+      <span class="">{{error}}</span>
     </ion-card-content>
   </ion-card>
 </ion-grid>
