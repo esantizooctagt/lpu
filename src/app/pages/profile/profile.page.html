@@ -1,5 +1,8 @@
 <ion-header>
   <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
     <ion-title slot="start" class="header-title-logo">
     </ion-title>
   </ion-toolbar>
@@ -15,7 +18,8 @@
       <ion-grid>
         <ion-row>
           <ion-col size="3">
-            <ion-icon class="icon-profile" src="/assets/img/person-circle.svg"></ion-icon>
+            <ion-icon class="icon-profile" *ngIf="foto === ''" src="/assets/img/person-circle.svg"></ion-icon>
+            <ion-img *ngIf="foto != ''" [src]="foto"></ion-img>
           </ion-col>
           <ion-col size="9">
             <ion-row>

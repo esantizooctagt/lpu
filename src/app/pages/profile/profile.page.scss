@@ -1,7 +1,7 @@
 .header-title-logo{
     display: inline-block;
     height: 40px;
-    background: url('/assets/img/resize.png') no-repeat 10px center/ 95px 40px;
+    background: url('/assets/img/resize.png') no-repeat 100px center/ 95px 40px;
 }
 .header-logo {
     position: absolute;
@@ -17,4 +17,9 @@
 .icon-profile{
     height: 48px;
     width: 48px;
+}
+ion-card-content{
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 5px;
 }

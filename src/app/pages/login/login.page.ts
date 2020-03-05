@@ -56,6 +56,7 @@ export class LoginPage implements OnInit {
           UserId: res.user.ID,
           Nombre: res.user.nombre,
           Email: res.user.correo,
+          Foto: res.user.foto,
           Gustos: res.user.gustos
         }
         this.storage.set('user', data);

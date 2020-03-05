@@ -19,6 +19,7 @@ export class PreferencesPage implements OnInit {
   displayForm: boolean = false;
   botonColor: number = 0;
   loading: any;
+  prefSet: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -96,6 +97,7 @@ export class PreferencesPage implements OnInit {
                 if (res.value.Nombre === element.Nombre) {
                   res.patchValue({ Sel: 1 });
                 }
+                this.prefSet = true;
               });
               this.botonColor = 1;
             });

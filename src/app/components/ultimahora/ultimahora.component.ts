@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NotasService } from '@app/services/notas.service';
 import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-import { Animation, AnimationController } from '@ionic/angular';
+// import { Animation, AnimationController } from '@ionic/core';
 
 @Component({
   selector: 'app-ultimahora',
@@ -13,7 +13,7 @@ export class UltimahoraComponent implements OnInit {
   notaDesp: number = 0;
   numberNotas: number = 0;
   notas$: Observable<any>;
-  
+
   constructor(
     private notasService: NotasService
   ) { }
@@ -47,7 +47,7 @@ export class UltimahoraComponent implements OnInit {
       if (this.notaDesp >= this.numberNotas){
         this.notaDesp = 0;
       }
-    }, 5000);
+    }, 18000);
   }
 
 }

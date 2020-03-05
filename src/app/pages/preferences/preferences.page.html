@@ -1,6 +1,11 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-title slot="start" class="header-title-logo">
+    <ion-buttons *ngIf="prefSet" slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title *ngIf="prefSet" slot="start" class="header-title-logo-01">
+    </ion-title>
+    <ion-title *ngIf="!prefSet" slot="start" class="header-title-logo">
     </ion-title>
     <ion-buttons mode="md" size="small" fill="outline" *ngIf="!userLog" slot="end" class="button-preference">
       <ion-button mode="md" size="small" fill="outline" color="secondary" class="ion-text-capitalize" [routerLink]="['/login']">

@@ -1,22 +1,28 @@
-.ultima-hora{
+.conatiner-uh{
+    display: inline-flex;
+}
+.ultima-hora-text{
     color:white;
     background: red;
     padding-top: 3px;
     padding-bottom: 3px;
     padding-left: 5px;
     width: 100px;
-    display: inline-flex;
+    flex: 1;
 }
-ion-text{
-    text-overflow: ellipsis;
+.content-text{
+    padding-top: 3px;
+    padding-bottom: 3px;
     overflow: hidden;
-    width: 300px;
+    display: inline-block;
+    animation: right_to_left 18s ease;
     white-space: nowrap;
-    -webkit-animation: rightThenLeft 4s linear;
-    margin-right: 10000px;
 }
-@-webkit-keyframes rightThenLeft {
-    0%   {margin-right:100%;}
-    50%  {margin-right:0;}
-    100% {margin-right:100%;}
-}
+@keyframes right_to_left {
+    from {
+      margin-left: 100%;
+    }
+    to {
+      margin-left: -150%;
+    }
+  }

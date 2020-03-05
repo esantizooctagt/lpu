@@ -11,6 +11,7 @@ export class ProfilePage implements OnInit {
   user: any;
   nombre: string = '';
   email: string = '';
+  foto: string = '';
   constructor(
     private storage: Storage,
     private router: Router
@@ -21,6 +22,7 @@ export class ProfilePage implements OnInit {
       if (val != null) {
         this.nombre = val.Nombre;
         this.email = val.Email;
+        this.foto = val.Foto;
       }
     });
   }

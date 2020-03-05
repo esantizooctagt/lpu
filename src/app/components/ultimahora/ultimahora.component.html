@@ -1,3 +1,6 @@
-<ng-container *ngFor="let nota of notas$ | async; trackBy: trackById; let i=index">
-  <ion-text *ngIf="i==notaDesp"><div class="ultima-hora"><span>Ultima Hora</span></div> {{nota.Titulo}}</ion-text>
-</ng-container>
+<div class="conatiner-ultima-hora">
+  <div class="ultima-hora-text"><span>Ultima Hora </span></div>
+  <ng-container *ngFor="let nota of notas$ | async; trackBy: trackById; let i=index">
+    <div class="content-text" *ngIf="i==notaDesp">{{nota.Titulo}}</div>
+  </ng-container>
+</div>
