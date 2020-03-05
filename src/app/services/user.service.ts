@@ -9,12 +9,17 @@ import { throwError } from 'rxjs';
   providedIn: 'root'
 })
 export class UserService {
-
   readonly apiURL = environment.apiUrl;
+
   constructor(private http: HttpClient) { }
 
   postUser(formData): Observable<any> {
     return this.http.post<any>(this.apiURL + '/user/register', formData)
+                    .pipe(catchError(this.errorHandler));
+  }
+
+  userLogin(formData): Observable<any>{
+    return this.http.post<any>(this.apiURL + '/user/login', formData)
                     .pipe(catchError(this.errorHandler));
   }
 

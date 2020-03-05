@@ -23,6 +23,10 @@ export class NotasService {
                     .pipe(catchError(this.errorHandler));
   }
 
+  getUltimasNoticias(): Observable<any>{
+    return this.http.get<any>(this.apiURL + '/ultimas-noticias')
+                    .pipe(catchError(this.errorHandler));
+  }
   // postTax(formData) {
   //     return this.http.post(this.apiURL + '/tax', formData)
   //                     .pipe(catchError(this.errorHandler));

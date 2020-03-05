@@ -12,19 +12,12 @@
         <ion-list>
           <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages">
             <ion-item [routerDirection]="'root'" [routerLink]="[p.url]">
-              <!-- <div class="menu-badge"></div> -->
-              <ion-icon [name]="p.icon"></ion-icon>
-              <!-- <div class="menu-badge" [ngStyle]="{'background-color': p.color}"></div> -->
-              <ion-label>
-                {{p.title}}
-              </ion-label>
+              <ion-icon slot="start" [src]="p.icon"></ion-icon>{{p.title}}
             </ion-item>
           </ion-menu-toggle>
         </ion-list>
       </ion-content>
     </ion-menu>
-    <!-- <ion-icon slot="start" [name]="p.icon"></ion-icon> -->
-    <!-- <app-menu></app-menu> -->
     <ion-router-outlet id="main-content"></ion-router-outlet>
   </ion-split-pane>
 </ion-app>

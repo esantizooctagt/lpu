@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -11,14 +12,19 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 export class AppComponent {  
   public appPages = [
     {
-      title: 'Home',
+      title: 'Inicio',
       url: '/home',
-      icon: 'home'
+      icon: '/assets/img/home-outline.svg'
     },
     {
-      title: 'Preferences',
+      title: 'Mi Perfil',
+      url: '/profile',
+      icon: '/assets/img/person-outline.svg'
+    },
+    {
+      title: 'Preferencias',
       url: '/preferences',
-      icon: 'grid-outline'
+      icon: '/assets/img/grid-outline.svg'
     }
   ];
 

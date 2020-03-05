@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Storage } from '@ionic/storage';
 import { FormBuilder } from '@angular/forms';
+import { Router } from '@angular/router';
+import { MenuService } from '@app/services/menu.service';
 import { UserService } from '@app/services/user.service';
 
 @Component({
@@ -8,10 +11,14 @@ import { UserService } from '@app/services/user.service';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
-
+  error: string = '';
+  showMenu: boolean = false;
   constructor(
     private fb: FormBuilder,
-    private userService: UserService
+    private menuService: MenuService,
+    private userService: UserService,
+    private storage: Storage,
+    private router: Router
   ) { }
 
   loginForm = this.fb.group({
@@ -20,26 +27,41 @@ export class LoginPage implements OnInit {
   })
 
   ngOnInit() {
+    this.storage.get('preferences').then((val) => {
+      if (val != null) {
+        this.showMenu = true;
+      } else {
+        this.showMenu = false;
+      }
+    }, error => {
+      this.showMenu = false;
+    });
   }
 
   onSubmit(){
-    console.log(this.loginForm.value);
+    if (this.loginForm.invalid) { return;}
+    this.error = '';
     const formData = {
-      nombre: this.loginForm.controls.Name.value,
-      correo: this.loginForm.controls.Email.value,
+      usuario: this.loginForm.controls.Email.value,
       contrasena: this.loginForm.controls.Password.value
     }
-    let datosUsuario = []
-    datosUsuario.push(formData);
-    let datosPaquete = []
-    datosPaquete.push({paquete: "Premium"});
-
-    const form = {
-      usuario: datosUsuario,
-      paquete: datosPaquete
-    }
-    this.userService.postUser(form).subscribe(res => {
-      console.log(res);
+    this.userService.userLogin(formData).subscribe(res => {
+      if (res.error === true){
+        this.error = "Invalid credentials";
+        this.menuService.userLogged = false;
+      } else {
+        this.error = '';
+        const data = {
+          Token: res.token,
+          UserId: res.user.ID,
+          Nombre: res.user.nombre,
+          Email: res.user.correo,
+          Gustos: res.user.gustos
+        }
+        this.storage.set('user', data);
+        this.menuService.userLogged = true;
+        this.router.navigate(['/home']);
+      }
     })
   }
 }

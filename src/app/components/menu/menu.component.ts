@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuService } from '@services/menu.service';
-import { CoreService } from '@app/core/core.service';
 
 export interface MenuLink {
   title: string;

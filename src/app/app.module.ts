@@ -14,9 +14,7 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { HttpClientModule } from '@angular/common/http';
 import { MenuComponent } from '@components/menu/menu.component';
-import { NotasComponent } from '@components/notas/notas.component';
 import { MenuService } from '@services/menu.service';
-import { CoreService } from './core/core.service';
 
 @NgModule({
   declarations: [AppComponent, MenuComponent],
@@ -37,7 +35,6 @@ import { CoreService } from './core/core.service';
     InAppBrowser,
     SocialSharing,
     MenuService,
-    CoreService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

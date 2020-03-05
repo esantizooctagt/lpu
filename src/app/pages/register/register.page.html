@@ -1,46 +1,44 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-title>Registrate</ion-title>
+    <ion-buttons slot="start" size="small" mode="md">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title class="header-title-logo">
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content fullscreen>
-  <form [formGroup]="registerForm">
-    <ion-list lines="full" class="ion-no-margin ion-no-padding">
-      <ion-item class="ion-padding-top">
+  <ion-card class="">
+    <ion-card-header>
+      <ion-img class="header-background" src="/assets/img/header02.jpg"></ion-img>
+      <ion-img class="header-logo" src="/assets/img/lpu_logo.png"></ion-img>
+      <ion-card-title>Register</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <form [formGroup]="registerForm">
         <ion-label position="stacked">Nombre Completo <ion-text color="danger">*</ion-text></ion-label>
         <ion-input formControlName="Name" required></ion-input>
-      </ion-item>
-
       <!-- <ion-item>
         <ion-label position="stacked">Compañia </ion-label>
         <ion-input></ion-input>
       </ion-item> -->
-      <ion-item>
         <ion-label position="stacked">Email <ion-text color="danger">*</ion-text></ion-label>
         <ion-input type="email" formControlName="Email" required></ion-input>
-      </ion-item>
-
-      <ion-item>
         <ion-label position="stacked">Password <ion-text color="danger">*</ion-text></ion-label>
         <ion-input type="password" formControlName="Password" required></ion-input>
-      </ion-item>
-
-      <ion-radio-group formControlName="Genero">
-        <ion-label position="stacked" class="ion-padding-start ion-padding-end">Genero</ion-label>
-        <ion-label position="stacked">M</ion-label>
-        <ion-radio slot="start" value="M" mode="md"></ion-radio>
-        <ion-label position="stacked" class="ion-padding-start">F</ion-label>
-        <ion-radio slot="start" value="F" mode="md"></ion-radio>
-      </ion-radio-group>
-      
-      <ion-item>
         <ion-label position="stacked">Fecha de Nacimiento</ion-label>
         <ion-datetime displayFormat="DD MM YYYY" placeholder="Select Date" formControlName="FechaNacimiento" required></ion-datetime>
-      </ion-item>
-    </ion-list>
-    <div class="ion-padding">
-      <ion-button color="secondary" expand="block" type="submit" (click)="onSubmit()" class="btn btn-secondary ion-no-margin" [disabled]="!registerForm.valid">Registrar</ion-button>
-    </div>
-  </form>
+        <ion-radio-group formControlName="Genero">
+          <ion-label position="stacked" class="ion-padding-start ion-padding-end">Genero</ion-label>
+          <ion-label position="stacked">M</ion-label>
+          <ion-radio slot="start" value="M" mode="md"></ion-radio>
+          <ion-label position="stacked" class="ion-padding-start">F</ion-label>
+          <ion-radio slot="start" value="F" mode="md"></ion-radio>
+        </ion-radio-group>
+        <ion-button color="secondary" mode="md" expand="full" type="submit" (click)="onSubmit()" class="btn btn-secondary button-accept" [disabled]="!registerForm.valid">Registrar</ion-button>
+        <ion-text color="danger" *ngIf="error != ''">{{error}}</ion-text>
+      </form>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

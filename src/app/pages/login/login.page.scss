@@ -11,3 +11,43 @@ login-form{
     margin-bottom: 12px;
     margin-top: 12px;
 }
+ion-card-title{
+    padding-left: 20px;
+    padding-top: 10px;
+    font-weight: 700;
+    padding-bottom: 10px;
+}
+ion-input{
+    margin-left: 15px;
+    margin-right: 15px;
+    width: 90%;
+    border: solid 1px #333333;
+    --padding-top: 3px;
+    --padding-bottom: 3px;
+    --padding-start: 5px;
+ }
+ ion-label{
+     padding-left: 15px;
+ }
+.header-title-logo{
+    display: inline-block;
+    height: 40px;
+    background: url('/assets/img/resize.png') no-repeat 100px center/ 95px 40px;
+}
+.button-accept{
+    margin-top: 20px;
+}
+.forgot-button {
+    --border-style: none;
+}
+.header-logo {
+    position: absolute;
+    height: 45%;
+    width: 65%;
+    top: 15px;
+    left: 20%;
+}
+.header-background {
+    position: relative;
+    height: 100px;
+}

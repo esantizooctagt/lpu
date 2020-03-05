@@ -111,6 +111,10 @@ export class NotasComponent implements OnInit {
   }
 
   async ngOnChanges(changes: {[propertyName: string]: SimpleChange}){
+    // console.log('ngChnages');
+    // console.log(changes);
+    // console.log('sec ' + this.sec + ' loc ' + this.loc);
+    this.error = '';
     if (changes['search'] != undefined){
       await this.presentLoading();
       this.notas$ = this.notasService.getNotas(this.search).pipe(
@@ -135,7 +139,7 @@ export class NotasComponent implements OnInit {
           }
           this.loading.dismiss();
           if (valores.length === 0){
-            this.error = "No data found";
+            this.error = "No se encontraron notas";
           }
           return valores;
         }),
@@ -172,7 +176,7 @@ export class NotasComponent implements OnInit {
           }
           this.loading.dismiss();
           if (valores.length === 0){
-            this.error = "No data found";
+            this.error = "No se encontraron notas";
           }
           return valores;
         }),

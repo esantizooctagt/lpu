@@ -1,0 +1,3 @@
+<ng-container *ngFor="let nota of notas$ | async; trackBy: trackById; let i=index">
+  <ion-text *ngIf="i==notaDesp"><div class="ultima-hora"><span>Ultima Hora</span></div> {{nota.Titulo}}</ion-text>
+</ng-container>

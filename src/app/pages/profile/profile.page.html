@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title slot="start" class="header-title-logo">
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen>
+  <ion-card>
+    <ion-card-header>
+      <ion-img class="header-background" src="/assets/img/header02.jpg"></ion-img>
+      <ion-img class="header-logo" src="/assets/img/lpu_logo.png"></ion-img>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-grid>
+        <ion-row>
+          <ion-col size="3">
+            <ion-icon class="icon-profile" src="/assets/img/person-circle.svg"></ion-icon>
+          </ion-col>
+          <ion-col size="9">
+            <ion-row>
+              <ion-text color="primary">
+                <h2>{{nombre}}
+                </h2>
+              </ion-text>
+            </ion-row>
+            <ion-row>
+              <ion-text color="primary">
+                <h3>{{email}}
+                </h3>
+              </ion-text>
+            </ion-row>
+          </ion-col> 
+        </ion-row>
+      </ion-grid>
+      <ion-button color="primary" mode="md" expand="full" type="submit" (click)="onSubmit()"
+          class="btn btn-secondary button-accept">DESCONECTAR</ion-button>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

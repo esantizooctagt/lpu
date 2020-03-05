@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 
 import { HomePage } from './home.page';
 import { NotasComponent } from '@components/notas/notas.component';
+import { UltimahoraComponent } from '@components/ultimahora/ultimahora.component';
 
 
 @NgModule({
@@ -20,6 +21,6 @@ import { NotasComponent } from '@components/notas/notas.component';
       }
     ])
   ],
-  declarations: [HomePage, NotasComponent]
+  declarations: [HomePage, NotasComponent, UltimahoraComponent]
 })
 export class HomePageModule {}

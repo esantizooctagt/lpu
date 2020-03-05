@@ -1,0 +1,22 @@
+.ultima-hora{
+    color:white;
+    background: red;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-left: 5px;
+    width: 100px;
+    display: inline-flex;
+}
+ion-text{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 300px;
+    white-space: nowrap;
+    -webkit-animation: rightThenLeft 4s linear;
+    margin-right: 10000px;
+}
+@-webkit-keyframes rightThenLeft {
+    0%   {margin-right:100%;}
+    50%  {margin-right:0;}
+    100% {margin-right:100%;}
+}
