@@ -49,3 +49,9 @@
     --ion-color-secondary-shade: #2986b1;
     --ion-color-secondary-tint: #65cdfd;
   }
+
+.can-go-back {
+  ion-menu-button {
+      display: none;
+  }
+}

@@ -19,7 +19,7 @@ export class NotasService {
   }
 
   getNotasFiltros(tipo, categoria, pais): Observable<any>{
-    return this.http.get<any>(this.apiURL + '/noticias/?tipo='+tipo+'&categoria='+categoria+'&pais=1')
+    return this.http.get<any>(this.apiURL + '/noticias/?tipo='+tipo+'&categoria='+categoria+'&pais=&limit=50')
                     .pipe(catchError(this.errorHandler));
   }
 
@@ -27,20 +27,6 @@ export class NotasService {
     return this.http.get<any>(this.apiURL + '/ultimas-noticias')
                     .pipe(catchError(this.errorHandler));
   }
-  // postTax(formData) {
-  //     return this.http.post(this.apiURL + '/tax', formData)
-  //                     .pipe(catchError(this.errorHandler));
-  // }
-
-  // updateTax(taxId, formData) {
-  //   return this.http.patch(this.apiURL + '/tax/'  + taxId, formData)
-  //                   .pipe(catchError(this.errorHandler));
-  // }
-
-  // deleteTax(taxId) {
-  //   return this.http.delete(this.apiURL + '/tax/' + taxId)
-  //                   .pipe(catchError(this.errorHandler));
-  // }
 
   errorHandler(error) {
     return throwError(error || 'Server Error');

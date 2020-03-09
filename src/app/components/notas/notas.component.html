@@ -1,39 +1,45 @@
 <ion-grid class="ion-no-padding" *ngIf="error == ''">
-  <ion-card class="welcome-card" *ngFor="let nota of notas$ | async; trackBy: trackById">
-    <div class="card-category" [ngStyle]="{'background-color': nota.CatColor}">{{nota.Categoria}}</div>
-    <img *ngIf="nota.UrlImage != ''" [src]="nota.UrlImage" alt="" />
-    <ion-card-content>
-      <ion-card-header>
-        <ion-row>
-          <ion-col class="ion-no-padding" size="4">
-            <ion-card-subtitle class="ion-subtitle-pais">{{ nota.Pais +':'}}</ion-card-subtitle>
-          </ion-col>
-          <ion-col class="ion-no-padding">
-            <ion-card-subtitle class="ion-subtitle-link" (click)='OpenUrl(nota.UrlLink);'>{{ nota.UrlFuente }}</ion-card-subtitle>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-card-title>{{nota.Titulo}}</ion-card-title>
-        </ion-row>
-      </ion-card-header>
-      <!-- <p>
+  <ng-container *ngFor="let nota of notas$ | async; trackBy: trackById">
+    <ion-card class="welcome-card" *ngIf="pref.length > 0 ? pref.indexOf(nota.Categoria)>=0 : true">
+      <div *ngIf="sec===''" class="card-category" [ngStyle]="{'background-color': nota.CatColor}">{{nota.Categoria}}
+      </div>
+      <div *ngIf="sec!=''" class="card-category">{{nota.Categoria}}</div>
+      <img *ngIf="nota.UrlImage != ''" [src]="nota.UrlImage" alt="" />
+      <ion-card-content>
+        <ion-card-header>
+          <ion-row>
+            <ion-col class="ion-no-padding" size="4">
+              <ion-card-subtitle class="ion-subtitle-pais">{{ nota.Pais +':'}}</ion-card-subtitle>
+            </ion-col>
+            <ion-col class="ion-no-padding">
+              <ion-card-subtitle class="ion-subtitle-link" (click)='OpenUrl(nota.UrlLink);'>{{ nota.UrlFuente }}
+              </ion-card-subtitle>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-card-title>{{nota.Titulo}}</ion-card-title>
+          </ion-row>
+        </ion-card-header>
+        <!-- <p>
       Now that your app has been created, you'll want to start building out features
     </p> -->
-      <ion-row class="card-actions">
-        <ion-col class="ion-no-padding" size="6">
-          <ion-icon class="icon" src="/assets/img/time-outline.svg"></ion-icon>
-          <span class="icon-text space-text">{{ nota.Fecha }}</span>
-        </ion-col>
-        <ion-col class="ion-no-padding" size="4">
-          <ion-icon class="icon icon-fire" src="/assets/img/flame.svg"></ion-icon>
-          <span class="icon-text space-text">{{ nota.Ranking }}</span>
-        </ion-col>
-        <ion-col class="ion-no-padding" size="2">
-          <ion-icon class="icon icon-shared" src="/assets/img/share-social.svg" (click)="SharedLink(nota.NotaId);"></ion-icon>
-        </ion-col>
-      </ion-row>
-    </ion-card-content>
-  </ion-card>
+        <ion-row class="card-actions">
+          <ion-col class="ion-no-padding" size="6">
+            <ion-icon class="icon" src="/assets/img/time-outline.svg"></ion-icon>
+            <span class="icon-text space-text">{{ nota.Fecha }}</span>
+          </ion-col>
+          <ion-col class="ion-no-padding" size="4">
+            <ion-icon class="icon icon-fire" src="/assets/img/flame.svg"></ion-icon>
+            <span class="icon-text space-text">{{ nota.Ranking }}</span>
+          </ion-col>
+          <ion-col class="ion-no-padding" size="2">
+            <ion-icon class="icon icon-shared" src="/assets/img/share-social.svg" (click)="SharedLink(nota.NotaId);">
+            </ion-icon>
+          </ion-col>
+        </ion-row>
+      </ion-card-content>
+    </ion-card>
+  </ng-container>
 </ion-grid>
 <ion-grid class="ion-no-padding" *ngIf="error != ''">
   <ion-card>

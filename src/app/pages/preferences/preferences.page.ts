@@ -7,6 +7,7 @@ import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { LoadingController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { MenuService } from '@app/services/menu.service';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-preferences',
@@ -16,7 +17,6 @@ import { MenuService } from '@app/services/menu.service';
 export class PreferencesPage implements OnInit {
   categories$: Observable<any>;
   items: any[] = [];
-  displayForm: boolean = false;
   botonColor: number = 0;
   loading: any;
   prefSet: boolean = false;
@@ -27,8 +27,22 @@ export class PreferencesPage implements OnInit {
     private categoriesService: CategoriesService,
     public loadingController: LoadingController,
     private menuService: MenuService,
-    private router: Router
+    private router: Router,
+    public toastController: ToastController
   ) {}
+
+  async presentToast() {
+    const toast = await this.toastController.create({
+      message: 'Sus preferencias han sido guardadas.',
+      duration: 2000,
+      color: "primary"
+    });
+
+    toast.onDidDismiss().then(_ => {
+      this.router.navigate(['/home']);
+    })
+    toast.present();
+  }
 
   prefForm = this.fb.group({
     Preferences: this.fb.array([this.addNewItem(0, '', '', 0)])
@@ -60,7 +74,6 @@ export class PreferencesPage implements OnInit {
 
   async ngOnInit() {
     await this.presentLoading();
-    this.displayForm = false;
 
     this.storage.get('user').then((val) => {
       if (val != null) {
@@ -74,22 +87,24 @@ export class PreferencesPage implements OnInit {
       }
     });
 
-    this.storage.get('preferences').then((val) => {
-      this.categories$ = this.categoriesService.getCategories().pipe(
-        map(data => {
-          let result = JSON.stringify(data).replace(',"error":false', '');
-          let result2 = result.replace('"error":false', '');
-          let values = JSON.parse(result2);
-          let i = 0;
-          for (const key of Object.keys(values)) {
-            if (i == 0) {
-              let res = this.prefForm.get('Preferences') as FormArray;
-              res.at(i).patchValue({ CategoryId: values[key].id, Nombre: values[key].nombre, Color: values[key].color, Sel: 0 });
-            } else {
-              this.pref.push(this.addNewItem(values[key].id, values[key].nombre, values[key].color, 0));
-            }
-            i++;
+    this.categories$ = this.categoriesService.getCategories().pipe(
+      map(data => {
+        let result = JSON.stringify(data).replace(',"error":false', '');
+        let result2 = result.replace('"error":false', '');
+        let values = JSON.parse(result2);
+        let i = 0;
+
+        for (const key of Object.keys(values)) {
+          if (i == 0) {
+            let res = this.prefForm.get('Preferences') as FormArray;
+            res.at(i).patchValue({ CategoryId: values[key].id, Nombre: values[key].nombre, Color: values[key].color, Sel: 0 });
+          } else {
+            this.pref.push(this.addNewItem(values[key].id, values[key].nombre, values[key].color, 0));
           }
+          i++;
+        }
+
+        this.storage.get('preferences').then((val) => {
           if (val != null) {
             val.forEach(element => {
               let res = this.prefForm.get('Preferences') as FormArray;
@@ -102,20 +117,19 @@ export class PreferencesPage implements OnInit {
               this.botonColor = 1;
             });
           }
-          this.loading.dismiss();
-          this.displayForm = true;
-          return this.prefForm;
-        }),
-        catchError(err => {
-          this.loading.dismiss();
-          this.displayForm = true;
-          return throwError(err | err.message);
-        })
-      );
-    });
+        });
+        this.loading.dismiss();
+        return this.prefForm;
+      }),
+      catchError(err => {
+        this.loading.dismiss();
+        this.router.navigate(['/home']);
+        return throwError(err | err.message);
+      })
+    );
   }
 
-  setPreferences() {
+  async setPreferences() {
     if (this.prefForm.invalid) {return;}
     let res = this.prefForm.get('Preferences') as FormArray;
     let valores = [];
@@ -125,7 +139,7 @@ export class PreferencesPage implements OnInit {
       }
     });
     this.storage.set('preferences', valores);
-    this.router.navigate(['/home']);
+    await this.presentToast();
   }
 
   selectedPref(i: number) {

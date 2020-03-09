@@ -51,7 +51,7 @@ export class HomePage {
   // }
 
   getData(event: any){
-    if (event.target.value === 0) {
+    if (event.target.value === '0') {
       this.section = '';
     } else {
       this.section = event.target.value;

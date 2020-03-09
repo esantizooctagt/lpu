@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Storage } from '@ionic/storage';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MenuService } from '@app/services/menu.service';
 import { UserService } from '@app/services/user.service';
+import { NavController, ToastController } from '@ionic/angular';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -12,30 +14,37 @@ import { UserService } from '@app/services/user.service';
 })
 export class LoginPage implements OnInit {
   error: string = '';
-  showMenu: boolean = false;
+  subLogin: Subscription;
+
   constructor(
     private fb: FormBuilder,
     private menuService: MenuService,
     private userService: UserService,
     private storage: Storage,
-    private router: Router
+    private router: Router,
+    public navCtrl:NavController,
+    public toastController: ToastController
   ) { }
 
+  async presentToast() {
+    const toast = await this.toastController.create({
+      message: 'Usuario logeado satisfactoriamente',
+      duration: 2000,
+      color: "primary"
+    });
+
+    toast.onDidDismiss().then(_ => {
+      this.router.navigate(['/home']);
+    })
+    toast.present();
+  }
+
   loginForm = this.fb.group({
-    Email: [''],
+    Email: ['', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$")]],
     Password: ['']
   })
 
   ngOnInit() {
-    this.storage.get('preferences').then((val) => {
-      if (val != null) {
-        this.showMenu = true;
-      } else {
-        this.showMenu = false;
-      }
-    }, error => {
-      this.showMenu = false;
-    });
   }
 
   onSubmit(){
@@ -45,7 +54,7 @@ export class LoginPage implements OnInit {
       usuario: this.loginForm.controls.Email.value,
       contrasena: this.loginForm.controls.Password.value
     }
-    this.userService.userLogin(formData).subscribe(res => {
+    this.subLogin = this.userService.userLogin(formData).subscribe(async res => {
       if (res.error === true){
         this.error = "Invalid credentials";
         this.menuService.userLogged = false;
@@ -61,8 +70,12 @@ export class LoginPage implements OnInit {
         }
         this.storage.set('user', data);
         this.menuService.userLogged = true;
-        this.router.navigate(['/home']);
+        await this.presentToast();
       }
-    })
+    });
+  }
+
+  ngOnDestroy() {
+    this.subLogin.unsubscribe();
   }
 }

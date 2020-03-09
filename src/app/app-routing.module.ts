@@ -26,6 +26,10 @@ const routes: Routes = [
     path: 'profile',
     canActivate: [LoginGuard],
     loadChildren: () => import('./pages/profile/profile.module').then( m => m.ProfilePageModule)
+  },
+  {
+    path: 'forgotpassword',
+    loadChildren: () => import('./pages/forgotpassword/forgotpassword.module').then( m => m.ForgotpasswordPageModule)
   }
 ];
 

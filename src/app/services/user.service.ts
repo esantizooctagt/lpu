@@ -23,6 +23,11 @@ export class UserService {
                     .pipe(catchError(this.errorHandler));
   }
 
+  forgotPassword(formData): Observable<any>{
+    return this.http.post(this.apiURL + '/user/forgotpassword/', formData)
+                    .pipe(catchError(this.errorHandler));
+  }
+
   errorHandler(error) {
     return throwError(error || 'Server Error');
   }

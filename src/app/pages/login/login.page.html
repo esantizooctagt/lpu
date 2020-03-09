@@ -1,9 +1,9 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-buttons *ngIf="showMenu" slot="start">
+    <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-buttons *ngIf="!showMenu" slot="start">
+    <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
     <ion-buttons slot="end" mode="md" fill="outline" size="small">
@@ -26,7 +26,7 @@
       <form [formGroup]="loginForm">
         <ion-label position="stacked">Email <ion-text color="danger">*</ion-text>
         </ion-label>
-        <ion-input type="email" formControlName="Email" required></ion-input>
+        <ion-input type="email" formControlName="Email" pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required></ion-input>
         <ion-label position="stacked">Password <ion-text color="danger">*</ion-text>
         </ion-label>
         <ion-input type="password" formControlName="Password" required></ion-input>

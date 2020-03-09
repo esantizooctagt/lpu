@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { Router } from '@angular/router';
+import { ToastController, NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-profile',
@@ -14,8 +15,24 @@ export class ProfilePage implements OnInit {
   foto: string = '';
   constructor(
     private storage: Storage,
-    private router: Router
+    private router: Router,
+    public toastController: ToastController,
+    public nav: NavController
   ) { }
+
+  async presentToast() {
+    const toast = await this.toastController.create({
+      message: 'Usuario desconectado satisfactoriamente.',
+      duration: 2000,
+      color: "primary"
+    });
+
+    toast.onDidDismiss().then(_ => {
+      this.nav.setDirection('root');
+      this.router.navigate(['/login']);
+    })
+    toast.present();
+  }
 
   ngOnInit() {
     this.storage.get('user').then((val) => {
@@ -27,13 +44,12 @@ export class ProfilePage implements OnInit {
     });
   }
 
-  onSubmit(){
+  async onSubmit(){
     this.storage.remove('user').then((val) => {
       if (val === undefined){
-        this.router.navigate(['/home']);
-        console.log('todo ok');
+        console.log('usuario desconectado');
       }
-
-    })
+    });
+    await this.presentToast();
   }
 }

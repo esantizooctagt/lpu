@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, SimpleChange } from '@angular/core';
 import { LoadingController } from '@ionic/angular';
 import { NotasService } from '@services/notas.service';
+import { Storage } from '@ionic/storage';
 import { InAppBrowser, InAppBrowserOptions } from '@ionic-native/in-app-browser/ngx';
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 import { map, filter, catchError } from 'rxjs/operators';
@@ -19,7 +20,7 @@ export class NotasComponent implements OnInit {
   notas$ : Observable<any>;
   loading: any;
   error: string = '';
-
+  pref: any[]=[];
   options : InAppBrowserOptions = {
     location : 'yes',//Or 'no' 
     hidden : 'no', //Or  'yes'
@@ -39,6 +40,7 @@ export class NotasComponent implements OnInit {
 };
 
   constructor(
+    private storage: Storage,
     private notasService: NotasService,
     public loadingController: LoadingController,
     private iab: InAppBrowser,
@@ -46,6 +48,15 @@ export class NotasComponent implements OnInit {
     ) { }
 
   ngOnInit() {
+    this.storage.get('preferences').then((val) => {
+      if (val != null) {
+        val.forEach(element => {
+          this.pref.push(element.Nombre);
+        });
+      }
+    }, error => {
+      this.pref = [];
+    });
   }
 
   async presentLoading() {
@@ -111,9 +122,6 @@ export class NotasComponent implements OnInit {
   }
 
   async ngOnChanges(changes: {[propertyName: string]: SimpleChange}){
-    // console.log('ngChnages');
-    // console.log(changes);
-    // console.log('sec ' + this.sec + ' loc ' + this.loc);
     this.error = '';
     if (changes['search'] != undefined){
       await this.presentLoading();
@@ -139,13 +147,13 @@ export class NotasComponent implements OnInit {
           }
           this.loading.dismiss();
           if (valores.length === 0){
-            this.error = "No se encontraron notas";
+            this.error = "No se encontraron resultados en su busqueda";
           }
           return valores;
         }),
         catchError(err => {
           this.loading.dismiss();
-          this.error = err.message;
+          this.error = 'Error en la carga de datos intente de nuevo';
           return throwError(err | err.message);
         })
       );
@@ -176,13 +184,13 @@ export class NotasComponent implements OnInit {
           }
           this.loading.dismiss();
           if (valores.length === 0){
-            this.error = "No se encontraron notas";
+            this.error = "No se encontraron resultados en su busqueda";
           }
           return valores;
         }),
         catchError(err => {
           this.loading.dismiss();
-          this.error = err.message;
+          this.error = 'Error en la carga de datos intente de nuevo';
           return throwError(err | err.message);
         })
       );
