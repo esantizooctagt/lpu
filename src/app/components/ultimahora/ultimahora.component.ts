@@ -50,4 +50,8 @@ export class UltimahoraComponent implements OnInit {
     }, 18000);
   }
 
+  trackById(index: number, item: any) {
+    return item.Titulo;
+  }
+
 }

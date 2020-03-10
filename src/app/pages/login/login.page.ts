@@ -66,7 +66,8 @@ export class LoginPage implements OnInit {
           Nombre: res.user.nombre,
           Email: res.user.correo,
           Foto: res.user.foto,
-          Gustos: res.user.gustos
+          Gustos: res.user.gustos,
+          Paquete: res.user.paquete
         }
         this.storage.set('user', data);
         this.menuService.userLogged = true;
@@ -76,6 +77,8 @@ export class LoginPage implements OnInit {
   }
 
   ngOnDestroy() {
-    this.subLogin.unsubscribe();
+    if (this.subLogin != undefined){
+      this.subLogin.unsubscribe();
+    }
   }
 }

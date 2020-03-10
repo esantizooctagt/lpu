@@ -49,21 +49,25 @@
       </ion-card-content>
     </ion-card>
   </ng-container>
-  <ng-container *ngIf="step==2">
-    <form [formGroup]="paquetesForm">
-      <ng-container formArrayName="Paquetes" *ngFor="let paq of paquetesForm.get('Paquetes').controls; let i = index">
-        <ng-container [formGroupName]="i">
-          <ion-card>
-            <ion-card-header>
-              <ion-checkbox ionChange="setPaquete(i, paq.PaqueteId)"></ion-checkbox>
-              <ion-card-title>{{paq.value.Titulo}}</ion-card-title>
-            </ion-card-header>
-            <ion-card-content>
-              <p>{{paq.value.Descripcion}}</p>
-            </ion-card-content>
-          </ion-card>
+  <ng-container *ngIf="paquetes$ | async">
+    <ng-container *ngIf="step==2">
+      <ion-text class="title-paquetes"><h3>Seleccione Paquete a Contratar</h3></ion-text>
+      <form [formGroup]="paquetesForm">
+        <ng-container formArrayName="Paquetes" *ngFor="let paq of paquetesForm.get('Paquetes').controls; let i = index">
+          <ng-container [formGroupName]="i">
+            <ion-card>
+              <ion-card-header>
+                <ion-checkbox class="checkbox-paquete" formControlName="Sel" (ionChange)="setPaquete(i, paq.PaqueteId)"></ion-checkbox>
+                <ion-card-title class="title-paq">{{paq.value.Titulo}}</ion-card-title>
+                <ion-card-subtitle class="subtitle-paq">{{ 'USD $. ' + (paq.value.Precio | number:'2.2-2')}}</ion-card-subtitle>
+              </ion-card-header>
+              <ion-card-content>
+                <div [innerHTML]="paq.value.Descripcion"></div>
+              </ion-card-content>
+            </ion-card>
+          </ng-container>
         </ng-container>
-      </ng-container>
-    </form>
+      </form>
+    </ng-container>
   </ng-container>
 </ion-content>

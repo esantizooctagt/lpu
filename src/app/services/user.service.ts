@@ -28,6 +28,21 @@ export class UserService {
                     .pipe(catchError(this.errorHandler));
   }
 
+  postPaqueteUser(userId, formData): Observable<any>{
+    return this.http.put(this.apiURL + '/user/' + userId, formData)
+                    .pipe(catchError(this.errorHandler));
+  }
+
+  getPaquetes(): Observable<any> {
+    return this.http.get<any>(this.apiURL + '/paquete')
+                    .pipe(catchError(this.errorHandler));
+  }
+
+  getPaquete(paqueteId): Observable<any> {
+    return this.http.get<any>(this.apiURL + '/paquete?id='+paqueteId)
+                    .pipe(catchError(this.errorHandler));
+  }
+
   errorHandler(error) {
     return throwError(error || 'Server Error');
   }

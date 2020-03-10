@@ -3,8 +3,9 @@ import { Storage } from '@ionic/storage';
 import { UserService } from '@services/user.service';
 import { FormBuilder, Validators, FormArray, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subscription, throwError, Observable } from 'rxjs';
 import { ToastController } from '@ionic/angular';
+import { map, catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-register',
@@ -16,7 +17,10 @@ export class RegisterPage implements OnInit {
   subLogin: Subscription;
   subPaquete: Subscription;
   step: number = 1;
-
+  paquetes$: Observable<any>;
+  valueToken: string = '';
+  userCod: number;
+  
   constructor(
     private fb: FormBuilder,
     private userService: UserService,
@@ -50,7 +54,7 @@ export class RegisterPage implements OnInit {
     Paquetes: this.fb.array([this.addNewItem(0, '', '', 0, 0)])
   });
 
-  get pref(): FormArray {
+  get paque(): FormArray {
     return this.paquetesForm.get("Paquetes") as FormArray
   }
 
@@ -65,6 +69,30 @@ export class RegisterPage implements OnInit {
   }
   
   ngOnInit() {
+    this.paquetes$ =this.userService.getPaquetes().pipe(
+      map(data => {
+        
+        let result = JSON.stringify(data).replace(',"error":false', '');
+        let result2 = result.replace('"error":false', '');
+        let values = JSON.parse(result2);
+        let i = 0;
+        let paquetes = values[0];
+        for (const key of Object.keys(paquetes)) {
+          if (i == 0) {
+            let res = this.paquetesForm.get('Paquetes') as FormArray;
+            res.at(i).patchValue({ PaqueteId: paquetes[key].ID, Titulo: paquetes[key].post_title, Descripcion: paquetes[key].post_content, Precio: paquetes[key].post_excerpt, Sel: 0 });
+          } else {
+            this.paque.push(this.addNewItem(paquetes[key].ID, paquetes[key].post_title, paquetes[key].post_content, paquetes[key].post_excerpt, 0));
+          }
+          i++;
+        }
+        return this.paquetesForm;
+      }),
+      catchError(err => {
+        this.router.navigate(['/home']);
+        return throwError(err | err.message);
+      })
+    );
   }
 
   onSubmit(){
@@ -76,7 +104,7 @@ export class RegisterPage implements OnInit {
 
     const formData = {
       usuario: userData,
-      paquete: { paquete: "Básico" }
+      paquete: "45" //{ paquete: "Básico" }
     }
     this.subLogin = this.userService.postUser(formData).subscribe(res => {
       if (res.error === true){
@@ -88,8 +116,11 @@ export class RegisterPage implements OnInit {
           UserId: res.user.ID,
           Nombre: res.user.nombre,
           Email: res.user.correo,
-          Gustos: res.user.gustos
+          Gustos: res.user.gustos,
+          Paquete: res.user.paquete
         }
+        this.valueToken = res.token;
+        this.userCod = res.user.ID;
         this.storage.set('user', data);
         this.step = 2;
       }
@@ -97,7 +128,16 @@ export class RegisterPage implements OnInit {
   }
 
   setPaquete(index: number, paqueteId: string){
-    this.subPaquete = this.userService.postPaqueteUser(paqueteId).subscribe(async res => {
+    const userData = {
+      correo: this.registerForm.controls.Email.value
+    }
+
+    const formData = {
+      id: userData,
+      token: this.valueToken,
+      paquete: "45" //{ rol: "Básico" }
+    }
+    this.subPaquete = this.userService.postPaqueteUser(this.userCod, formData).subscribe(async res => {
       if (res.error === true){
         this.error = res.msg;
       } else {
@@ -108,8 +148,12 @@ export class RegisterPage implements OnInit {
   }
 
   ngOnDestroy() {
-    this.subLogin.unsubscribe();
-    this.subPaquete.unsubscribe();
+    if (this.subLogin != undefined){
+      this.subLogin.unsubscribe();
+    }
+    if (this.subPaquete != undefined){
+      this.subPaquete.unsubscribe();
+    }
   }
 
 }

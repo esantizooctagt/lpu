@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ToastController } from '@ionic/angular';
+import { ToastController, LoadingController } from '@ionic/angular';
 import { FormBuilder, Validators } from '@angular/forms';
 import { UserService } from '@app/services/user.service';
 import { Subscription } from 'rxjs';
@@ -13,11 +13,13 @@ import { Subscription } from 'rxjs';
 export class ForgotpasswordPage implements OnInit {
   public error: string = '';
   subLogin: Subscription;
-  
+  loading: any;
+
   constructor(
     private fb: FormBuilder,
     private userService: UserService,
     private router: Router,
+    public loadingController: LoadingController,
     public toastController: ToastController
   ) { }
 
@@ -41,20 +43,29 @@ export class ForgotpasswordPage implements OnInit {
   ngOnInit() {
   }
 
+  async presentLoading() {
+    this.loading = await this.loadingController.create({
+      message: 'Generando Email...',
+      duration: 3000
+    });
+    await this.loading.present();
+  }
+
   async onSubmit(){
     if (this.forgotForm.invalid) {return;}
 
+    await this.presentLoading();
     const forgot = {
       email: this.forgotForm.get('Email').value
     }
 
     this.subLogin = this.userService.forgotPassword(forgot).subscribe(async res => {
-      console.log('resultado forgot');
-      console.log(res);
       if (res.error === true){
-        this.error = "Invalid credentials";
+        this.loading.dismiss();
+        this.error = "No se pudo enviar el correo intente de nuevo";
       } else {
         this.error = '';
+        this.loading.dismiss();
         await this.presentToast();
       }
     });

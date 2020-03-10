@@ -41,4 +41,14 @@
           class="btn btn-secondary button-accept">DESCONECTAR</ion-button>
     </ion-card-content>
   </ion-card>
+  <ng-container *ngIf="paquete$ | async"></ng-container>
+  <ion-card *ngIf="Titulo != ''">
+    <ion-card-header>
+      <ion-card-title class="title-paq">{{Titulo}}</ion-card-title>
+      <ion-card-subtitle class="subtitle-paq">{{ 'USD $. ' + (Precio | number:'2.2-2')}}</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content class="paquete-descripcion">
+      <div [innerHTML]="Descripcion"></div>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
