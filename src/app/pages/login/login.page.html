@@ -14,28 +14,23 @@
     <ion-title class="header-title-logo"></ion-title>
   </ion-toolbar>
 </ion-header>
-
 <ion-content fullscreen>
-  <ion-card>
-    <ion-card-header>
-      <ion-img class="header-background" src="/assets/img/header02.jpg"></ion-img>
-      <ion-img class="header-logo" src="/assets/img/lpu_logo.png"></ion-img>
-      <ion-card-title>Welcome</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <form [formGroup]="loginForm">
-        <ion-label position="stacked">Email <ion-text color="danger">*</ion-text>
-        </ion-label>
-        <ion-input type="email" formControlName="Email" pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required></ion-input>
-        <ion-label position="stacked">Password <ion-text color="danger">*</ion-text>
-        </ion-label>
-        <ion-input type="password" formControlName="Password" required></ion-input>
-        <ion-button color="secondary" mode="md" expand="full" type="submit" (click)="onSubmit()"
-          class="btn btn-secondary button-accept" [disabled]="!loginForm.valid">LOGIN</ion-button>
-        <ion-text color="danger" *ngIf="error != ''">Invalid Credentials</ion-text>
-      </form>
-      <ion-button type="button" class="forgot-button ion-text-capitalize" mode="md" fill="outline" expand="full" [routerLink]="['/forgotpassword']">Forgot password?
-      </ion-button>
-    </ion-card-content>
-  </ion-card>
+  <ion-text><h2>Welcome</h2></ion-text>
+  <form [formGroup]="loginForm">
+    <div class="text-email">
+      <ion-label position="stacked">Email <ion-text color="danger">*</ion-text>
+      </ion-label>
+      <ion-input type="email" formControlName="Email" pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required></ion-input>
+    </div>
+    <div class="">
+      <ion-label position="stacked">Password <ion-text color="danger">*</ion-text>
+      </ion-label>
+      <ion-input type="password" formControlName="Password" required></ion-input>
+    </div>
+    <ion-button color="secondary" mode="md" expand="full" type="submit" (click)="onSubmit()"
+      class="btn btn-secondary button-accept">LOGIN</ion-button> <!-- [disabled]="!loginForm.valid"-->
+    <ion-text color="danger" *ngIf="error != ''">Invalid Credentials</ion-text>
+  </form>
+  <ion-button type="button" class="forgot-button ion-text-capitalize" mode="md" fill="outline" expand="full" [routerLink]="['/forgotpassword']">Forgot password?
+  </ion-button>
 </ion-content>

@@ -15,13 +15,10 @@
     height: 100px;
 }
 .icon-profile{
-    height: 48px;
-    width: 48px;
-}
-ion-card-content{
-    padding-left: 5px;
-    padding-right: 5px;
-    padding-top: 5px;
+    height: 84px;
+    width: 84px;
+    color: lightgray;
+    margin-left: -15px;
 }
 .paquete-descripcion{
     padding-left: 17px;
@@ -29,4 +26,55 @@ ion-card-content{
 }
 .title-paq{
     text-transform: uppercase;
+}
+h2{
+    margin-top: 0px;
+    margin-bottom: 2px;
+    color:white;
+}
+h3{
+    margin-top: 0px;
+    color:white;
+}
+.segment-button-checked{
+    border-bottom: 3px solid #3CC0FD;
+    color: #3CC0FD;
+}
+.text-checkbox{
+    display: flex;
+    align-items: center;
+    color: white;
+    margin-bottom: 15px;
+    padding-left: 10px;
+}
+ion-card-content{
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 5px;
+    color:white;
+}
+ion-content{
+    --background: black;
+    --padding-start: 15px;
+    --padding-end: 10px;
+}
+ion-segment-button{
+    color:white;
+    font-size: 12px;
+    height: 40px;
+    min-height: 40px;
+}
+ion-segment{
+    margin-top: 20px;
+}
+ion-card-title{
+    color: white;
+}
+ion-card-subtitle{
+    color:white;
+}
+ion-card{
+    border: solid 1px darkgray;
+    border-radius: 0px;
+    background: #444444;
 }

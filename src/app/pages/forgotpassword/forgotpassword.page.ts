@@ -72,6 +72,8 @@ export class ForgotpasswordPage implements OnInit {
   }
 
   ngOnDestroy() {
-    this.subLogin.unsubscribe();
+    if (this.subLogin != undefined){
+      this.subLogin.unsubscribe();
+    }
   }
 }

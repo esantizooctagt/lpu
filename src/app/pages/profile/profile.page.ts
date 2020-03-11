@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { ToastController, NavController } from '@ionic/angular';
 import { UserService } from '@app/services/user.service';
 import { Observable } from 'rxjs';
-import { map, filter } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-profile',
@@ -21,6 +21,7 @@ export class ProfilePage implements OnInit {
   Precio: string = '';
   Descripcion: string = '';
   paquete: string = '';
+  Display: string = 'plan';
 
   constructor(
     private storage: Storage,
@@ -53,7 +54,6 @@ export class ProfilePage implements OnInit {
         this.paquete = val.Paquete;
         this.paquete$ =this.userService.getPaquete("45").pipe(
           map(res => { 
-            console.log(res[0]);
             this.Titulo = res[0].post_name;
             this.Precio = res[1].precio;
             this.Descripcion = res[0].post_content;
@@ -71,5 +71,9 @@ export class ProfilePage implements OnInit {
       }
     });
     await this.presentToast();
+  }
+
+  segmentChanged(event){
+    this.Display = event.target.value;
   }
 }

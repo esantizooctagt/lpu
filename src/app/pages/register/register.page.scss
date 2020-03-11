@@ -1,5 +1,11 @@
+ion-card{
+    border: solid 1px darkgray;
+    border-radius: 0px;
+    background: #444444;
+}
 ion-card-content{
     padding: 8px 8px 8px 8px;
+    color:white;
 }
 ion-card-header {
     padding: 0;
@@ -9,6 +15,10 @@ ion-card-title{
     padding-top: 10px;
     font-weight: 700;
     padding-bottom: 10px;
+    color:white;
+}
+ion-card-subtitle{
+    color:white;
 }
 login-form{
     margin-left: 8px;
@@ -21,34 +31,44 @@ ion-input{
     margin-left: 15px;
     margin-right: 15px;
     width: 90%;
-    border: solid 1px #333333;
     --padding-top: 3px;
     --padding-bottom: 3px;
     --padding-start: 5px;
+    border: solid 1px white;
+    color:white;
+ }
+ ion-label{
+     padding-left: 15px;
+     color:white;
+ }
+ ion-content{
+    --background: black;
+    --padding-start: 15px;
+    --padding-end: 10px;
 }
-ion-label{
+ion-button{
+    color: white;
+}
+h2{
     padding-left: 15px;
+    font-weight: 600;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    color:white;
 }
 ion-radio{
     position: relative;
     top: 5px;
     left: 5px;
+    --color-checked: white;
+}
+ion-datetime{
+    color:white;
 }
 .header-title-logo{
     display: inline-block;
     height: 40px;
     background: url('/assets/img/resize.png') no-repeat 100px center/ 95px 40px;
-}
-.header-logo {
-    position: absolute;
-    height: 45%;
-    width: 65%;
-    top: 15px;
-    left: 20%;
-}
-.header-background {
-    position: relative;
-    height: 100px;
 }
 .button-accept{
     margin-top: 20px;
@@ -69,4 +89,7 @@ ion-radio{
     padding-left: 40px;
     font-weight: 800;
     font-size: large;
+}
+.text-form{
+    padding-bottom: 15px;
 }

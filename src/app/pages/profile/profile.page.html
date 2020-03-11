@@ -7,42 +7,56 @@
     </ion-title>
   </ion-toolbar>
 </ion-header>
-
 <ion-content fullscreen>
-  <ion-card>
-    <ion-card-header>
-      <ion-img class="header-background" src="/assets/img/header02.jpg"></ion-img>
-      <ion-img class="header-logo" src="/assets/img/lpu_logo.png"></ion-img>
-    </ion-card-header>
-    <ion-card-content>
-      <ion-grid>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="5">
+        <ion-icon class="icon-profile" *ngIf="foto === ''" src="/assets/img/person-circle.svg"></ion-icon>
+        <ion-img *ngIf="foto != ''" [src]="foto"></ion-img>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="9">
         <ion-row>
-          <ion-col size="3">
-            <ion-icon class="icon-profile" *ngIf="foto === ''" src="/assets/img/person-circle.svg"></ion-icon>
-            <ion-img *ngIf="foto != ''" [src]="foto"></ion-img>
-          </ion-col>
-          <ion-col size="9">
-            <ion-row>
-              <ion-text color="primary">
-                <h2>{{nombre}}
-                </h2>
-              </ion-text>
-            </ion-row>
-            <ion-row>
-              <ion-text color="primary">
-                <h3>{{email}}
-                </h3>
-              </ion-text>
-            </ion-row>
-          </ion-col> 
+          <ion-text color="primary">
+            <h2 class="ion-text-uppercase">{{nombre}}
+            </h2>
+          </ion-text>
         </ion-row>
-      </ion-grid>
-      <ion-button color="primary" mode="md" expand="full" type="submit" (click)="onSubmit()"
-          class="btn btn-secondary button-accept">DESCONECTAR</ion-button>
-    </ion-card-content>
-  </ion-card>
-  <ng-container *ngIf="paquete$ | async"></ng-container>
-  <ion-card *ngIf="Titulo != ''">
+        <ion-row>
+          <ion-text color="primary">
+            <h3>{{email}}
+            </h3>
+          </ion-text>
+        </ion-row>
+      </ion-col> 
+    </ion-row>
+    <ion-row class="">
+      <div float-left class="text-checkbox">
+        <ion-checkbox name="notificaciones" mode="ios">
+        </ion-checkbox>
+        <ion-label>&nbsp;&nbsp;&nbsp;Permitir Notificaciones</ion-label>
+      </div>
+    </ion-row>
+    <ion-row class="">
+      <ion-col col="12">
+        <ion-button color="secondary" mode="md" expand="full" type="submit" (click)="onSubmit()"
+        class="btn btn-secondary button-accept">DESCONECTAR</ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row class="">
+      <ng-container *ngIf="paquete$ | async"></ng-container>
+      <ion-segment mode="md" (ionChange)="segmentChanged($event)" value="plan">
+        <ion-segment-button value="plan">
+          <ion-label>Plan</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="follow">
+          <ion-label>Follow</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+    </ion-row>
+  </ion-grid>
+  <ion-card *ngIf="Titulo != '' && Display == 'plan'">
     <ion-card-header>
       <ion-card-title class="title-paq">{{Titulo}}</ion-card-title>
       <ion-card-subtitle class="subtitle-paq">{{ 'USD $. ' + (Precio | number:'2.2-2')}}</ion-card-subtitle>

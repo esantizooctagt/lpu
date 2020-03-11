@@ -3,8 +3,6 @@ ion-segment{
   height: 44px;
 }
 ion-segment-button{
-  //font-size: 16px;
-  //color: var(--ion-color-medium);
   background: var(--ion-color-primary);
   color: white;
   border: 0px;
@@ -14,6 +12,12 @@ ion-segment-button{
 ion-searchbar{
   --color	:white;
 }
+ion-menu-button {
+  display: inline !important;
+}
+ion-footer{
+  background: white;
+}
 .segment-button-checked{
   border-bottom: 3px solid #3CC0FD;
 }
@@ -21,20 +25,9 @@ ion-searchbar{
   max-height: 35vh;
   overflow: hidden;
 }
-.header-logo {
-  position: absolute;
-  height: 45%;
-  width: 65%;
-  top: 0px;
-  left: 20%;
-}
 .header-title-logo{
   display: inline-block;
   height: 40px;
-}
-.header-background {
-  position: relative;
-  height: 30%;
 }
 .title-img {
   position: absolute;
@@ -45,7 +38,4 @@ ion-searchbar{
 }
 .icon{
   background-color: white;
-}
-ion-menu-button {
-  display: inline !important;
 }

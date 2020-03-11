@@ -1,9 +1,3 @@
-ion-card-content{
-    padding: 8px 8px 8px 8px;
-}
-ion-card-header {
-    padding: 0;
-}
 login-form{
     margin-left: 8px;
     margin-right: 8px;
@@ -11,24 +5,35 @@ login-form{
     margin-bottom: 12px;
     margin-top: 12px;
 }
-ion-card-title{
-    padding-left: 20px;
-    padding-top: 10px;
-    font-weight: 700;
-    padding-bottom: 10px;
-}
 ion-input{
     margin-left: 15px;
     margin-right: 15px;
     width: 90%;
-    border: solid 1px #333333;
     --padding-top: 3px;
     --padding-bottom: 3px;
     --padding-start: 5px;
+    border: solid 1px white;
+    color:white;
  }
  ion-label{
      padding-left: 15px;
+     color:white;
  }
+ ion-content{
+    --background: black;
+    --padding-start: 15px;
+    --padding-end: 10px;
+}
+ion-button{
+    color: white;
+}
+h2{
+    padding-left: 15px;
+    font-weight: 600;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    color:white;
+}
 .header-title-logo{
     display: inline-block;
     height: 40px;
@@ -40,14 +45,6 @@ ion-input{
 .forgot-button {
     --border-style: none;
 }
-.header-logo {
-    position: absolute;
-    height: 45%;
-    width: 65%;
-    top: 15px;
-    left: 20%;
-}
-.header-background {
-    position: relative;
-    height: 100px;
+.text-email{
+    padding-bottom: 15px;
 }

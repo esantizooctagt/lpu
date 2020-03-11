@@ -10,25 +10,21 @@
       <ion-button (click)="displaySearch()">
         <ion-icon slot="icon-only" src="/assets/img/search-circle.svg"></ion-icon>
       </ion-button>
-      <!-- <ion-button [routerDirection]="'forward'" [routerLink]="['/login']">
-        <ion-icon slot="icon-only" src="/assets/img/person-circle.svg"></ion-icon>
-      </ion-button> -->
     </ion-buttons>
   </ion-toolbar>
   <ion-searchbar mode="ios" placeholder="Buscar" cancelButtonText="Cerrar" *ngIf="searchDisp" showCancelButton="always" (ionChange)="filterNotas($event)" debounce="500" (ionCancel)="hideSearch()"></ion-searchbar>
 </ion-header>
-
 <ion-content>
-  <app-ultimahora></app-ultimahora>
-  <ion-img class="header-background" src="/assets/img/header02.jpg"></ion-img>
-  <ion-img class="header-logo" src="/assets/img/lpu_logo.png"></ion-img>
   <ion-segment mode="md" scrollable (ionChange)="getData($event)" value="0">
     <ion-segment-button value="0" [ngStyle]="{'background': '#333333'}">
-      <ion-label class="ion-text-uppercase">TODOS</ion-label>
+      <ion-label class="ion-text-capitalize">#Todos</ion-label>
     </ion-segment-button>
     <ion-segment-button *ngFor="let menu of items" value="{{menu.CategoryId}}" [ngStyle]="{'background': menu.Color}">
-      <ion-label class="ion-text-uppercase">{{menu.Nombre}}</ion-label>
+      <ion-label class="ion-text-capitalize">{{'#'+menu.Nombre}}</ion-label>
     </ion-segment-button>
   </ion-segment>
   <app-notas [search]="valueSearch" [loc]="location" [sec]="section"></app-notas>
 </ion-content>
+<ion-footer class="">
+  <app-ultimahora></app-ultimahora>
+</ion-footer>
