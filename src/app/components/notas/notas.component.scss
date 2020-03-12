@@ -8,20 +8,24 @@ ion-card-header {
     padding: 0;
 }
 ion-card-subtitle{
-    padding-top: 15px;
-    color: #3CC0FD;
+    padding-top: 7px;
+    color: cornflowerblue;
 }
 ion-card-title{
-    font-size: small;
-    color: darkgray;
-    font-family: 'Montserrat', sans-serif !important;
+    font-size: medium;
+    color: black;
+    font-family: 'Georgia Pro Cond Semibold', sans-serif !important;
 }
 ion-card{
-    margin-left: 8px;
-    margin-right: 8px;
-    border-radius: 4px;
-    margin-bottom: 12px;
-    margin-top: 12px;
+    margin-left: 0px;
+    margin-right: 0px;
+    border-radius: 0px;
+    margin-bottom: 0px;
+    margin-top: 0px;
+    border-top: solid 5px var(--ion-color-primary, #3880ff) !important;
+    border-bottom: solid 5px var(--ion-color-primary, #3880ff) !important;
+    border-radius: 0px;
+    box-shadow: none;
 }
 .card-category{
     top:0px;
@@ -35,12 +39,15 @@ ion-card{
 .card-actions{
     padding-top: 10px;
     text-align: left;
+    border-top: solid 1px lightgrey;
+    padding-top: 5px;
+    margin-top: 6px;
 }
 .icon-fire {
-    color: red;
+    color: darkgrey;
 }
 .icon-shared {
-    color: #3CC0FD;
+    color: darkgrey;
     padding-left: 15px;
     // cursor: pointer;
 }
@@ -55,13 +62,29 @@ ion-card{
     vertical-align: middle;
 }
 .space-text{
-    padding-left: 5px;
+    padding-left: 0px;
     font-size: 12px;
+    color: darkgrey;
+    vertical-align: sub;
 }
 .ion-subtitle-link{
     text-transform: lowercase;
     // cursor: pointer;
 }
 .ion-subtitle-pais{
-    text-transform: capitalize;
+    text-transform: uppercase;
+}
+.ion-fuente{
+    text-transform: lowercase;
+    color: cornflowerblue;
+    font-size: smaller;
+}
+.ion-fecha{
+    text-align: right;
+}
+.ion-pais{
+    height: 20px;
+}
+.ion-center{
+    text-align: center;
 }

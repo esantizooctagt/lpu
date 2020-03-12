@@ -1,11 +1,11 @@
 import { Component, OnInit, Input, SimpleChange } from '@angular/core';
-import { LoadingController } from '@ionic/angular';
+import { LoadingController, ToastController } from '@ionic/angular';
 import { NotasService } from '@services/notas.service';
 import { Storage } from '@ionic/storage';
 import { InAppBrowser, InAppBrowserOptions } from '@ionic-native/in-app-browser/ngx';
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 import { map, filter, catchError } from 'rxjs/operators';
-import { Observable, throwError } from 'rxjs';
+import { Observable, throwError, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-notas',
@@ -18,8 +18,18 @@ export class NotasComponent implements OnInit {
   @Input() sec: string;
 
   notas$ : Observable<any>;
+  bookmark: Subscription;
+  bookmarkDel: Subscription;
   loading: any;
   error: string = '';
+  token: string = '';
+  UserId: string = '';
+  Nombre: string = '';
+  Correo: string = '';
+  Foto: string = '';
+  Paquete: string = '';
+  Gustos: string = '';
+  Follows: any;
   pref: any[]=[];
   options : InAppBrowserOptions = {
     location : 'yes',//Or 'no' 
@@ -44,8 +54,19 @@ export class NotasComponent implements OnInit {
     private notasService: NotasService,
     public loadingController: LoadingController,
     private iab: InAppBrowser,
-    private socialSharing: SocialSharing
+    private socialSharing: SocialSharing,
+    public toastController: ToastController
     ) { }
+
+  async presentToast(message: string) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 2000,
+      color: "primary"
+    });
+
+    toast.present();
+  }
 
   ngOnInit() {
     this.storage.get('preferences').then((val) => {
@@ -56,6 +77,19 @@ export class NotasComponent implements OnInit {
       }
     }, error => {
       this.pref = [];
+    });
+
+    this.storage.get('user').then((val) => {
+      if (val !=null){
+        this.token = val.Token;
+        this.UserId = val.UserId;
+        this.Nombre = val.Nombre;
+        this.Correo = val.Email;
+        this.Foto = val.Foto;
+        this.Gustos = val.Gustos;
+        this.Paquete = val.Paquete;
+        this.Follows = val.Follows;
+      }
     });
   }
 
@@ -117,6 +151,71 @@ export class NotasComponent implements OnInit {
     })
   }
 
+  SaveBookmark(nota: any){
+    if (this.token != ''){
+      const formData = {
+        id : nota.NotaId,
+        token : this.token
+      }
+      this.bookmark = this.notasService.postBookmark(formData).subscribe(res => {
+          if (res != undefined){
+            const data = {
+              Token: this.token,
+              UserId: this.UserId,
+              Nombre: this.Nombre,
+              Email: this.Correo,
+              Foto: this.Foto,
+              Gustos: this.Gustos,
+              Paquete: this.Paquete,
+              Follows: JSON.parse(JSON.stringify(res).replace(',"error":false',''))
+            }
+            nota.Sel =1;
+            this.storage.set('user', data);
+            this.presentToast("Nota almacenada en coleccion");
+          }          
+      });
+    } else {
+      this.presentToast("Debe iniciar sesion para guardar en coleccion");
+    }
+  }
+
+  DelBookmark(nota: any){
+    if (this.token != ''){
+      const formData = {
+        id : nota.NotaId,
+        token : this.token
+      }
+      this.bookmarkDel = this.notasService.delBookmark(formData).subscribe(res => {
+          if (res != undefined){
+            const data = {
+              Token: this.token,
+              UserId: this.UserId,
+              Nombre: this.Nombre,
+              Email: this.Correo,
+              Foto: this.Foto,
+              Gustos: this.Gustos,
+              Paquete: this.Paquete,
+              Follows: JSON.parse(JSON.stringify(res).replace(',"error":false',''))
+            }
+            nota.Sel =0;
+            this.storage.set('user', data);
+            this.presentToast("Nota eliminada de coleccion");
+          }          
+      });
+    } else {
+      this.presentToast("Debe iniciar sesion para guardar en coleccion");
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.bookmark != undefined){
+      this.bookmark.unsubscribe();
+    }
+    if (this.bookmarkDel != undefined){
+      this.bookmarkDel.unsubscribe();
+    }
+  }
+
   trackById(index: number, item: any) {
     return item.NotaId;
   }
@@ -131,17 +230,46 @@ export class NotasComponent implements OnInit {
           let values = JSON.parse(result);
           let valores =[];
           for (const key of Object.keys(values)) {
+            let url = values[key].col_url_fuente.split('/')[0] + '//' + values[key].col_url_fuente.split('/')[1] + '/' + values[key].col_url_fuente.split('/')[2];
+            var pubDate = new Date(values[key].col_fecha_publicacion);
+            var curDate = new Date();
+            var difDate:number = (+pubDate-+curDate);
+
+            var diffInSeconds = Math.abs(difDate) / 1000;
+            var anios = Math.floor(diffInSeconds / 31536000);
+            var months = Math.floor(diffInSeconds / 2592000);
+            var weeks = Math.floor(diffInSeconds / 604800); 
+            var days = Math.floor(diffInSeconds / 86400);
+            var hours = Math.floor(diffInSeconds / 60 / 60 % 24);
+            var minutes = Math.floor(diffInSeconds / 60 % 60);
+
+            var dispDate = '';
+            if (anios > 0){
+              dispDate = anios+ (anios === 1 ? ' año': ' años');
+            } else if (months > 0){
+              dispDate = months+ (months === 1 ? ' mes' : ' meses');
+            } else if (weeks > 0) {
+              dispDate = weeks + ' sem';
+            } else if (days > 0) {
+              dispDate = days + (days === 1 ? ' dia' : ' dias');
+            } else if (hours > 0) {
+              dispDate = hours + (hours === 1 ? ' hora' : ' horas');
+            } else if (minutes > 0){
+              dispDate = minutes + (minutes === 1 ? ' minuto' : ' minutos');
+            }
+
             const resultado  =  {
               NotaId: values[key].col_id,
               Pais: values[key].col_pais,
               Titulo: values[key].col_titulo,
               UrlFuente: values[key].col_url_fuente.split('/')[2],
               UrlLink: values[key].col_url_fuente,
-              UrlImage: (values[key].col_url_img == '' ? '' : 'https://www.laprensa.hn'+ values[key].col_url_img),
+              UrlImage: (values[key].col_url_img == '' ? '' : (values[key].col_url_img.indexOf('http') === 0 ? values[key].col_url_img : url+ values[key].col_url_img)),
               CatColor: this.getColor(values[key].col_cat_id),
               Categoria: values[key].col_categoria,
               Ranking: values[key].col_ranking,
-              Fecha: values[key].col_fecha_publicacion.split(' ')[0]
+              Fecha: dispDate, //values[key].col_fecha_publicacion.split(' ')[0]
+              Sel: this.searchNota(values[key].col_id)
             }
             valores.push(resultado);
           }
@@ -168,17 +296,46 @@ export class NotasComponent implements OnInit {
           let values = JSON.parse(result2);
           let valores =[];
           for (const key of Object.keys(values)) {
+            let url = values[key].col_url_fuente.split('/')[0] + '//'+ values[key].col_url_fuente.split('/')[1] +values[key].col_url_fuente.split('/')[2];
+            var pubDate = new Date(values[key].col_fecha_publicacion);
+            var curDate = new Date();
+            var difDate:number = (+pubDate-+curDate);
+
+            var diffInSeconds = Math.abs(difDate) / 1000;
+            var anios = Math.floor(diffInSeconds / 31536000);
+            var months = Math.floor(diffInSeconds / 2592000);
+            var weeks = Math.floor(diffInSeconds / 604800); 
+            var days = Math.floor(diffInSeconds / 86400);
+            var hours = Math.floor(diffInSeconds / 60 / 60 % 24);
+            var minutes = Math.floor(diffInSeconds / 60 % 60);
+
+            var dispDate = '';
+            if (anios > 0){
+              dispDate = anios+ (anios === 1 ? ' año': ' años');
+            } else if (months > 0){
+              dispDate = months+ (months === 1 ? ' mes' : ' meses');
+            } else if (weeks > 0) {
+              dispDate = weeks + ' sem';
+            } else if (days > 0) {
+              dispDate = days + (days === 1 ? ' dia' : ' dias');
+            } else if (hours > 0) {
+              dispDate = hours + (hours === 1 ? ' hora' : ' horas');
+            } else if (minutes > 0){
+              dispDate = minutes + (minutes === 1 ? ' minuto' : ' minutos');
+            }
+
             const resultado  =  {
               NotaId: values[key].col_id,
               Pais: values[key].col_pais,
               Titulo: values[key].col_titulo,
               UrlFuente: values[key].col_url_fuente.split('/')[2],
               UrlLink: values[key].col_url_fuente,
-              UrlImage: (values[key].col_url_img == '' ? '' : 'https://www.laprensa.hn'+ values[key].col_url_img),
+              UrlImage: (values[key].col_url_img == '' ? '' : (values[key].col_url_img.indexOf('http') === 0 ? values[key].col_url_img : url+ values[key].col_url_img)),
               CatColor: this.getColor(values[key].col_cat_id),
               Categoria: values[key].col_categoria,
               Ranking: values[key].col_ranking,
-              Fecha: values[key].col_fecha_publicacion.split(' ')[0]
+              Fecha: dispDate, //values[key].col_fecha_publicacion.split(' ')[0]
+              Sel: this.searchNota(values[key].col_id)
             }
             valores.push(resultado);
           }
@@ -195,6 +352,15 @@ export class NotasComponent implements OnInit {
         })
       );
     }
+  }
+
+  searchNota(id: number): number{
+    for (const key of Object.keys(this.Follows)) {  
+      if (this.Follows[key].ID === id){
+        return 1;
+      }
+    }
+    return 0;
   }
 
 }

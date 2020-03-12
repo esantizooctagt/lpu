@@ -53,7 +53,7 @@
     <ng-container *ngIf="step==2">
       <ion-text class="title-paquetes"><h3>Seleccione Paquete a Contratar</h3></ion-text>
       <form [formGroup]="paquetesForm">
-        <ng-container formArrayName="Paquetes" *ngFor="let paq of paquetesForm.get('Paquetes').controls; let i = index">
+        <ng-container formArrayName="Paquetes" *ngFor="let paq of paqueForm.controls; let i = index">
           <ng-container [formGroupName]="i">
             <ion-card>
               <ion-card-header>

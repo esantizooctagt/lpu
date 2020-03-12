@@ -58,6 +58,10 @@ export class RegisterPage implements OnInit {
     return this.paquetesForm.get("Paquetes") as FormArray
   }
 
+  get paqueForm() { 
+    return this.paquetesForm.get('Paquetes'); 
+  }
+
   addNewItem(id: number, titulo: string, descripcion: string, precio: number, selected: number): FormGroup {
     return this.fb.group({
       PaqueteId: id,
@@ -118,7 +122,8 @@ export class RegisterPage implements OnInit {
           Email: res.user.correo,
           Foto: res.user.foto,
           Gustos: res.user.gustos,
-          Paquete: res.user.paquete
+          Paquete: res.user.paquete,
+          Follows: res.user.follows
         }
         this.valueToken = res.token;
         this.userCod = res.user.ID;

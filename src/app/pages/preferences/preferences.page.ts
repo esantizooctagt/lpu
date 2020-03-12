@@ -55,6 +55,10 @@ export class PreferencesPage implements OnInit {
     return this.prefForm.get("Preferences") as FormArray
   }
 
+  get prefArrayForm() { 
+    return this.prefForm.get('Preferences'); 
+  }
+  
   addNewItem(id: number, name: string, color: string, selected: number): FormGroup {
     return this.fb.group({
       CategoryId: id,

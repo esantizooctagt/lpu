@@ -35,6 +35,7 @@ h2{
 h3{
     margin-top: 0px;
     color:white;
+    font-size: small;
 }
 .segment-button-checked{
     border-bottom: 3px solid #3CC0FD;
@@ -46,6 +47,21 @@ h3{
     color: white;
     margin-bottom: 15px;
     padding-left: 10px;
+}
+.ion-title{
+    font-size: medium;
+    color: white;
+    font-family: 'Georgia Pro Cond Semibold', sans-serif !important;
+}
+.ion-header{
+    padding-left: 5px;
+    padding-right: 5px;
+}
+.icon{
+    display: inline-block;
+    font-size: 20px;
+    color: white;
+    vertical-align: middle;
 }
 ion-card-content{
     padding-left: 5px;
@@ -77,4 +93,10 @@ ion-card{
     border: solid 1px darkgray;
     border-radius: 0px;
     background: #444444;
+    margin-left: 0px;
+    margin-right: 0px;
+}
+ion-checkbox{
+    height: 20px;
+    width: 20px;
 }

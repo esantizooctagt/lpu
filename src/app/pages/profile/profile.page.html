@@ -33,25 +33,25 @@
     </ion-row>
     <ion-row class="">
       <div float-left class="text-checkbox">
-        <ion-checkbox name="notificaciones" mode="ios">
+        <ion-checkbox name="notificaciones" mode="ios" (ionChange)="setNotifications()">
         </ion-checkbox>
         <ion-label>&nbsp;&nbsp;&nbsp;Permitir Notificaciones</ion-label>
       </div>
     </ion-row>
     <ion-row class="">
       <ion-col col="12">
-        <ion-button color="secondary" mode="md" expand="full" type="submit" (click)="onSubmit()"
+        <ion-button  mode="md" color="secondary" expand="full" type="submit" (click)="onSubmit()"
         class="btn btn-secondary button-accept">DESCONECTAR</ion-button>
       </ion-col>
     </ion-row>
     <ion-row class="">
       <ng-container *ngIf="paquete$ | async"></ng-container>
       <ion-segment mode="md" (ionChange)="segmentChanged($event)" value="plan">
-        <ion-segment-button value="plan">
+        <ion-segment-button mode="md" value="plan">
           <ion-label>Plan</ion-label>
         </ion-segment-button>
-        <ion-segment-button value="follow">
-          <ion-label>Follow</ion-label>
+        <ion-segment-button mode="md" value="follow">
+          <ion-label>Follows</ion-label>
         </ion-segment-button>
       </ion-segment>
     </ion-row>
@@ -65,4 +65,33 @@
       <div [innerHTML]="Descripcion"></div>
     </ion-card-content>
   </ion-card>
+  <ion-grid *ngIf="Display == 'follow'">
+    <ion-card (click)='OpenUrl(item.UrlLink);' *ngFor="let item of nota">
+      <img *ngIf="item.UrlImage != ''" [src]="item.UrlImage" alt="" />
+      <ion-card-content>
+        <ion-card-header class="ion-header">
+          <ion-row>
+            <ion-col class="ion-no-padding" size="12">
+              <ion-card-title class="ion-title">{{item.Titulo}}</ion-card-title>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col class="ion-no-padding" size="12">
+              <ion-text class="ion-fuente">{{item.UrlFuente}}</ion-text>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col class="ion-no-padding" size="12">
+              <span class="icon-text space-text">{{ item.Fecha }}</span>
+            </ion-col>
+          </ion-row>
+        </ion-card-header>
+        <ion-row class="card-actions">
+          <ion-col class="ion-no-padding" size="12">
+            <ion-icon class="icon" src="/assets/img/bookmark.svg"></ion-icon>
+          </ion-col>
+        </ion-row>
+      </ion-card-content>
+    </ion-card>
+  </ion-grid>
 </ion-content>

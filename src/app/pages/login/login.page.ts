@@ -67,7 +67,8 @@ export class LoginPage implements OnInit {
           Email: res.user.correo,
           Foto: res.user.foto,
           Gustos: res.user.gustos,
-          Paquete: res.user.paquete
+          Paquete: res.user.paquete,
+          Follows: res.user.follows
         }
         this.storage.set('user', data);
         this.menuService.userLogged = true;

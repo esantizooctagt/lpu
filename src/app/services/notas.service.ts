@@ -28,6 +28,16 @@ export class NotasService {
                     .pipe(catchError(this.errorHandler));
   }
 
+  postBookmark(formData): Observable<any>{
+    return this.http.post<any>(this.apiURL + '/follow', formData)
+                    .pipe(catchError(this.errorHandler));
+  }
+
+  delBookmark(formData): Observable<any>{
+    return this.http.put<any>(this.apiURL + '/follow', formData)
+                    .pipe(catchError(this.errorHandler));
+  }
+
   errorHandler(error) {
     return throwError(error || 'Server Error');
   }

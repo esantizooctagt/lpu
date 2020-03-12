@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
-import { Platform } from '@ionic/angular';
+import { Platform, ModalController, AlertController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Router } from '@angular/router';
+import { OneSignal } from '@ionic-native/onesignal/ngx';
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'app-root',
@@ -31,7 +33,11 @@ export class AppComponent {
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
-    private statusBar: StatusBar
+    private statusBar: StatusBar,
+    private oneSignal: OneSignal,
+    private alertCtrl: AlertController,
+    private router: Router,
+    private storage: Storage
   ) {
     this.initializeApp();
   }
@@ -45,6 +51,48 @@ export class AppComponent {
       setTimeout(() =>{
         this.splashScreen.hide();
       }, 4000);
+      if (this.platform.is('cordova') || this.platform.is('ios') || this.platform.is('android')){
+        this.setupPush('20a3f3a5-7c4d-490b-a443-bfcc70e25cdf', '1012338907944');
+        this.storage.set('notif', true);
+      }
     });
+  }
+
+  setupPush(appId, projNumber){
+    this.oneSignal.startInit(appId,projNumber);
+    this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.None);
+    this.oneSignal.handleNotificationReceived().subscribe(data => {
+      let msg = data.payload.body;
+      let title = data.payload.title;
+      let addiotionalData = data.payload.additionalData;
+      if (addiotionalData.task != '') {
+        // this.showAlert(title, msg, addiotionalData.task);
+        this.router.navigateByUrl('/home/'+ addiotionalData.task);
+      }
+    });
+    this.oneSignal.handleNotificationOpened().subscribe(data => {
+      let addiotionalData = data.notification.payload.additionalData;
+      if (addiotionalData.task != '') {
+        // this.showAlert('Notification opened', 'You already read this before', addiotionalData.task);
+        this.router.navigateByUrl('/home/'+ addiotionalData.task);
+      }
+    });
+    this.oneSignal.endInit();
+  }
+
+  async showAlert(title, msg, task){
+    const alert = await this.alertCtrl.create({
+      header: title,
+      subHeader: msg,
+      buttons: [
+        {
+          text: 'Mostrar', // `Action: ${task}`,
+          handler: () => {
+            this.router.navigateByUrl('/home/'+ task);
+          }
+        }
+      ]
+    })
+    alert.present();
   }
 }
