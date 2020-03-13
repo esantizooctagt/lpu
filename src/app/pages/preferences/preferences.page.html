@@ -21,7 +21,7 @@
       <h1 class="title-preferences">Acerca de que le gustaria leer?</h1>
     </ion-text>
     <form [formGroup]="prefForm">
-      <ng-container formArrayName="Preferences" *ngFor="let cat of prefArrayForm.controls; let i = index">
+      <ng-container formArrayName="Preferences" *ngFor="let cat of pref.controls; let i = index">
         <ng-container [formGroupName]="i">
           <ion-chip [id]="cat.value.CategoryId" class="chip-preference"
             [ngClass]="{'chip-color': cat.value.Sel === 0, 'chip-sel-color': cat.value.Sel === 1 }"

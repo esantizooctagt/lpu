@@ -133,18 +133,19 @@ export class NotasComponent implements OnInit {
     this.iab.create(link, '_blank', this.options);
   }
 
-  SharedLink(id: string){
-    let nota = this.notas$.pipe(filter(x => x.NotaId === id));
+  SharedLink(nota: any){
+    // let nota = this.notas$.pipe(filter(x => x.NotaId === id));
     var options = {
-      message: 'Te han compartido la siguiente nota : ' + nota[0].Titulo, // not supported on some apps (Facebook, Instagram)
-      subject: nota[0].Titulo, // fi. for email
+      message: 'Te han compartido la siguiente nota : ' + nota.Titulo, // not supported on some apps (Facebook, Instagram)
+      subject: nota.Titulo, // fi. for email
       //files: ['', ''], // an array of filenames either locally or remotely
-      url: nota[0].UrlLink,
+      url: nota.UrlLink,
       //chooserTitle: 'Pick an app', // Android only, you can override the default share sheet title
       //appPackageName: 'com.apple.social.facebook', // Android only, you can provide id of the App you want to share with
       iPadCoordinates: '0,0,0,0' //IOS only iPadCoordinates for where the popover should be point.  Format with x,y,width,height
     };
     this.socialSharing.shareWithOptions(options).then((res) => {
+      console.log('shared link');
       console.log(res);
     }).catch((e) =>{
       console.log(e.message);
@@ -323,7 +324,6 @@ export class NotasComponent implements OnInit {
             } else if (minutes > 0){
               dispDate = minutes + (minutes === 1 ? ' minuto' : ' minutos');
             }
-
             const resultado  =  {
               NotaId: values[key].col_id,
               Pais: values[key].col_pais,
@@ -355,9 +355,11 @@ export class NotasComponent implements OnInit {
   }
 
   searchNota(id: number): number{
-    for (const key of Object.keys(this.Follows)) {  
-      if (this.Follows[key].ID === id){
-        return 1;
+    if (this.Follows != undefined){
+      for (const key of Object.keys(this.Follows)) {  
+        if (this.Follows[key].ID === id){
+          return 1;
+        }
       }
     }
     return 0;

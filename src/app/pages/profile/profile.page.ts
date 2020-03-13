@@ -72,8 +72,9 @@ export class ProfilePage implements OnInit {
       if (val != undefined){
         this.notifications = val;
       }
-    }).catch(error => 
-      this.notifications = true
+    }).catch(error => {
+        this.notifications = true;
+      }
     );
 
     this.storage.get('user').then((val) => {
@@ -144,6 +145,7 @@ export class ProfilePage implements OnInit {
 
   setNotifications(){
     this.notifications = !this.notifications;
+    this.storage.set('notif', this.notifications);
   }
 
 }

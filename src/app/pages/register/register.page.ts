@@ -58,10 +58,6 @@ export class RegisterPage implements OnInit {
     return this.paquetesForm.get("Paquetes") as FormArray
   }
 
-  get paqueForm() { 
-    return this.paquetesForm.get('Paquetes'); 
-  }
-
   addNewItem(id: number, titulo: string, descripcion: string, precio: number, selected: number): FormGroup {
     return this.fb.group({
       PaqueteId: id,
