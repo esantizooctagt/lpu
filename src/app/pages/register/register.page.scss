@@ -37,11 +37,11 @@ ion-input{
     border: solid 1px white;
     color:white;
  }
- ion-label{
-     padding-left: 15px;
-     color:white;
+ion-label{
+    padding-left: 15px;
+    color:white;
  }
- ion-content{
+ion-content{
     --background: black;
     --padding-start: 15px;
     --padding-end: 10px;
@@ -55,6 +55,8 @@ h2{
     padding-top: 10px;
     padding-bottom: 10px;
     color:white;
+    text-align: center;
+    margin-top: 65px;
 }
 ion-radio{
     position: relative;
@@ -64,14 +66,34 @@ ion-radio{
 }
 ion-datetime{
     color:white;
+    font-size: smaller;
+    width: 180px;
+    left: 14px;
+    background: var(--ion-color-primary, #3880ff) !important;
 }
 .header-title-logo{
     display: inline-block;
     height: 40px;
-    background: url('/assets/img/resize.png') no-repeat center/95px;
+    background: url('/assets/img/logoLPU.png') no-repeat center/40px;
+    // position: absolute;
+    // top: 5px;
+    // left: 60px;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+.header-image{
+    // display: inline-block;
+    // height: 40px;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+.image-app{
+    height: 30px;
 }
 .button-accept{
     margin-top: 20px;
+    text-transform: capitalize;
+    font-size: 16px;
 }
 .title-paquetes h3{
     padding-left: 10px;
@@ -92,4 +114,9 @@ ion-datetime{
 }
 .text-form{
     padding-bottom: 15px;
+}
+.text-danger{
+    color:red;
+    margin-left: 15px;
+    margin-right: 15px;
 }

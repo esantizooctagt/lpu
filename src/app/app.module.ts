@@ -17,6 +17,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { MenuComponent } from '@components/menu/menu.component';
 import { MenuService } from '@services/menu.service';
 
+// geolocation and native-geocoder
+import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
+
 @NgModule({
   declarations: [AppComponent, MenuComponent],
   entryComponents: [],
@@ -37,6 +41,8 @@ import { MenuService } from '@services/menu.service';
     SocialSharing,
     MenuService,
     OneSignal,
+    Geolocation,
+    NativeGeocoder,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { UserService } from '@services/user.service';
-import { FormBuilder, Validators, FormArray, FormGroup } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription, throwError, Observable } from 'rxjs';
 import { ToastController } from '@ionic/angular';
@@ -15,9 +15,10 @@ import { map, catchError } from 'rxjs/operators';
 export class RegisterPage implements OnInit {
   error: string = '';
   subLogin: Subscription;
-  subPaquete: Subscription;
   step: number = 1;
   paquetes$: Observable<any>;
+  paquetes: any [];
+  paqueteId: string ='';
   valueToken: string = '';
   userCod: number;
   
@@ -43,50 +44,25 @@ export class RegisterPage implements OnInit {
   }
 
   registerForm = this.fb.group({
-    Name: [''],
+    Name: ['', Validators.required],
     Email: ['', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$")]],
-    Password: [''],
+    Password: ['', Validators.required],
     Genero: [''],
-    FechaNacimiento: ['']
+    FechaNacimiento: ['', Validators.required]
   });
-
-  paquetesForm = this.fb.group({
-    Paquetes: this.fb.array([this.addNewItem(0, '', '', 0, 0)])
-  });
-
-  get paque(): FormArray {
-    return this.paquetesForm.get("Paquetes") as FormArray
-  }
-
-  addNewItem(id: number, titulo: string, descripcion: string, precio: number, selected: number): FormGroup {
-    return this.fb.group({
-      PaqueteId: id,
-      Titulo: titulo,
-      Descripcion: descripcion,
-      Precio: precio,
-      Sel: selected
-    })
-  }
   
   ngOnInit() {
     this.paquetes$ =this.userService.getPaquetes().pipe(
       map(data => {
-        
         let result = JSON.stringify(data).replace(',"error":false', '');
         let result2 = result.replace('"error":false', '');
         let values = JSON.parse(result2);
-        let i = 0;
-        let paquetes = values[0];
-        for (const key of Object.keys(paquetes)) {
-          if (i == 0) {
-            let res = this.paquetesForm.get('Paquetes') as FormArray;
-            res.at(i).patchValue({ PaqueteId: paquetes[key].ID, Titulo: paquetes[key].post_title, Descripcion: paquetes[key].post_content, Precio: paquetes[key].post_excerpt, Sel: 0 });
-          } else {
-            this.paque.push(this.addNewItem(paquetes[key].ID, paquetes[key].post_title, paquetes[key].post_content, paquetes[key].post_excerpt, 0));
-          }
-          i++;
+        let paqs = values[0];
+        this.paquetes = [];
+        for (const key of Object.keys(paqs)) {
+          this.paquetes.push({ PaqueteId : paqs[key].ID, Titulo : paqs[key].post_title, Descripcion : paqs[key].post_content, Precio : paqs[key].post_excerpt, Sel : false});
         }
-        return this.paquetesForm;
+        return this.paquetes;
       }),
       catchError(err => {
         this.router.navigate(['/home']);
@@ -96,6 +72,7 @@ export class RegisterPage implements OnInit {
   }
 
   onSubmit(){
+    if (this.paqueteId == '') { return; }
     const userData = {
       nombre: this.registerForm.controls.Name.value,
       correo: this.registerForm.controls.Email.value,
@@ -104,9 +81,9 @@ export class RegisterPage implements OnInit {
 
     const formData = {
       usuario: userData,
-      paquete: "45" //{ paquete: "Básico" }
+      paquete: this.paqueteId
     }
-    this.subLogin = this.userService.postUser(formData).subscribe(res => {
+    this.subLogin = this.userService.postUser(formData).subscribe(async res => {
       if (res.error === true){
         this.error = res.msg;
       } else {
@@ -124,37 +101,30 @@ export class RegisterPage implements OnInit {
         this.valueToken = res.token;
         this.userCod = res.user.ID;
         this.storage.set('user', data);
-        this.step = 2;
-      }
-    });
-  }
-
-  setPaquete(index: number, paqueteId: string){
-    const userData = {
-      correo: this.registerForm.controls.Email.value
-    }
-
-    const formData = {
-      id: userData,
-      token: this.valueToken,
-      paquete: "45" //{ rol: "Básico" }
-    }
-    this.subPaquete = this.userService.postPaqueteUser(this.userCod, formData).subscribe(async res => {
-      if (res.error === true){
-        this.error = res.msg;
-      } else {
-        this.error = '';
         await this.presentToast();
       }
     });
   }
 
+  changeStep(){
+    if (this.registerForm.invalid) { return; }
+    this.step = 2;
+  }
+
+  setPaquete(index: number, paqueteId: string){
+    this.paqueteId = paqueteId;
+    for (let i = 0; i < this.paquetes.length; i++) {
+      if (this.paquetes[i].PaqueteId != this.paqueteId){
+        this.paquetes[i].Sel= false;
+      } else {
+        this.paquetes[i].Sel = true;
+      }
+    }
+  }
+
   ngOnDestroy() {
     if (this.subLogin != undefined){
       this.subLogin.unsubscribe();
-    }
-    if (this.subPaquete != undefined){
-      this.subPaquete.unsubscribe();
     }
   }
 

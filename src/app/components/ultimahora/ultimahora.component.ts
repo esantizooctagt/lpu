@@ -10,6 +10,7 @@ import { map, catchError } from 'rxjs/operators';
   styleUrls: ['./ultimahora.component.scss'],
 })
 export class UltimahoraComponent implements OnInit {
+  // uhText: string = '';
   notaDesp: number = 0;
   numberNotas: number = 0;
   notas$: Observable<any>;

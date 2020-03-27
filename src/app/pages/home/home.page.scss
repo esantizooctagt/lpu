@@ -1,7 +1,6 @@
 ion-segment{
   --background: url('/assets/img/header.jpg');
   height: 44px;
-  margin-bottom: 10px;
 }
 ion-segment-button{
   background: var(--ion-color-primary);
@@ -20,7 +19,7 @@ ion-footer{
   background: white;
 }
 .segment-button-checked{
-  border-bottom: 3px solid #3CC0FD;
+  border-bottom: 6px solid darkred;
 }
 .welcome-card img {
   max-height: 35vh;

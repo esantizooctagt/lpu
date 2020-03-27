@@ -6,31 +6,38 @@
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-buttons slot="end" mode="md" fill="outline" size="small">
-      <ion-button mode="md" fill="outline" size="small" type="button" color="secondary" class="ion-text-capitalize" [routerLink]="['/register']">
-        Register
+    <ion-buttons slot="end">
+      <ion-button color="secondary" class="ion-text-menu ion-text-capitalize" [routerLink]="['/register']">
+        Regístrate
       </ion-button>
     </ion-buttons>
-    <ion-title class="header-title-logo"></ion-title>
+    <ion-title class="header-title-logo" slot="start"></ion-title>
   </ion-toolbar>
 </ion-header>
 <ion-content fullscreen>
-  <ion-text><h2>Welcome</h2></ion-text>
+  <ion-text><h2>Bienvenido</h2></ion-text>
   <form [formGroup]="loginForm">
     <div class="text-email">
-      <ion-label position="stacked">Email <ion-text color="danger">*</ion-text>
+      <ion-label position="stacked">Correo electrónico <ion-text color="danger">*</ion-text>
       </ion-label>
       <ion-input type="email" formControlName="Email" pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required></ion-input>
+      <div *ngIf="loginForm.get('Email').invalid && (loginForm.get('Email').dirty || loginForm.get('Email').touched)">
+        <label class="text-danger" *ngIf="loginForm.get('Email').errors.required">Correo electrónico no debe estar vacio</label>
+        <label class="text-danger" *ngIf="loginForm.get('Email').errors.pattern">Correo electrónico invalido</label>
+      </div>
     </div>
     <div class="">
-      <ion-label position="stacked">Password <ion-text color="danger">*</ion-text>
+      <ion-label position="stacked">Contraseña <ion-text color="danger">*</ion-text>
       </ion-label>
       <ion-input type="password" formControlName="Password" required></ion-input>
+      <div *ngIf="loginForm.get('Password').invalid && (loginForm.get('Password').dirty || loginForm.get('Password').touched)">
+        <label class="text-danger" *ngIf="loginForm.get('Password').errors.required">Contraseña no debe estar vacio</label>
+      </div>
     </div>
     <ion-button color="secondary" mode="md" expand="full" type="submit" (click)="onSubmit()"
-      class="btn btn-secondary button-accept">LOGIN</ion-button> <!-- [disabled]="!loginForm.valid"-->
-    <ion-text color="danger" *ngIf="error != ''">Invalid Credentials</ion-text>
+      class="btn btn-secondary button-accept">Iniciar Sesión</ion-button> <!-- [disabled]="!loginForm.valid"-->
+    <ion-text color="danger" *ngIf="error != ''">Credenciales inválidas</ion-text>
   </form>
-  <ion-button type="button" class="forgot-button ion-text-capitalize" mode="md" fill="outline" expand="full" [routerLink]="['/forgotpassword']">Forgot password?
+  <ion-button type="button" class="forgot-button ion-text-capitalize" mode="md" fill="outline" expand="full" [routerLink]="['/forgotpassword']">Recuperar mi contraseña?
   </ion-button>
 </ion-content>

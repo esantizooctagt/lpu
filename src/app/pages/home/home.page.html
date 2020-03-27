@@ -7,7 +7,11 @@
       <ion-img class="header-title-logo" src="/assets/img/resize.png"></ion-img>
     </ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="displaySearch()">
+      <ng-container *ngIf="paises$ | async"></ng-container>
+      <ion-button (click)="presentPopover($event)">
+        <ion-icon slot="icon-only" src="/assets/img/location-outline.svg"></ion-icon>
+      </ion-button>
+      <ion-button *ngIf="showSearch" (click)="displaySearch()">
         <ion-icon slot="icon-only" src="/assets/img/search-circle.svg"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -23,7 +27,7 @@
       <ion-label class="ion-text-capitalize">{{'#'+menu.Nombre}}</ion-label>
     </ion-segment-button>
   </ion-segment>
-  <app-notas [search]="valueSearch" [loc]="location" [sec]="section"></app-notas>
+  <app-notas [search]="valueSearch" [loc]="location" [sec]="section" [pais]="selpais"></app-notas>
 </ion-content>
 <ion-footer class="">
   <app-ultimahora></app-ultimahora>

@@ -29,7 +29,7 @@ export class UserService {
   }
 
   postPaqueteUser(userId, formData): Observable<any>{
-    return this.http.put(this.apiURL + '/user/' + userId, formData)
+    return this.http.put(this.apiURL + '/user/' + userId + '/upgrade/', formData)
                     .pipe(catchError(this.errorHandler));
   }
 

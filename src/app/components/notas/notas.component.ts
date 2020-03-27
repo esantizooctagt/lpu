@@ -16,6 +16,7 @@ export class NotasComponent implements OnInit {
   @Input() search: string;
   @Input() loc: string;
   @Input() sec: string;
+  @Input() pais: string;
 
   notas$ : Observable<any>;
   bookmark: Subscription;
@@ -263,6 +264,7 @@ export class NotasComponent implements OnInit {
               NotaId: values[key].col_id,
               Pais: values[key].col_pais,
               Titulo: values[key].col_titulo,
+              Resumen: (values[key].col_contenido.length > 180 ? values[key].col_contenido.substring(0,180).trim() : values[key].col_contenido.trim()),
               UrlFuente: values[key].col_url_fuente.split('/')[2],
               UrlLink: values[key].col_url_fuente,
               UrlImage: (values[key].col_url_img == '' ? '' : (values[key].col_url_img.indexOf('http') === 0 ? values[key].col_url_img : url+ values[key].col_url_img)),
@@ -288,9 +290,9 @@ export class NotasComponent implements OnInit {
       );
     }
 
-    if (changes['sec'] != undefined || changes['loc'] != undefined){
+    if (changes['sec'] != undefined || changes['loc'] != undefined || changes['pais'] != undefined){
       await this.presentLoading();
-      this.notas$ = this.notasService.getNotasFiltros((this.loc == null ? '' : this.loc), (this.sec == null ? '': this.sec), "").pipe(
+      this.notas$ = this.notasService.getNotasFiltros((this.loc == null ? '' : (this.pais != '' ? 'pais' : this.loc)), (this.sec == null ? '': this.sec), (this.pais == null ? '' : this.pais)).pipe(
         map(data => {
           let result = JSON.stringify(data).replace(',"error":false','');
           let result2 = result.replace('"error":false','');
@@ -320,14 +322,15 @@ export class NotasComponent implements OnInit {
             } else if (days > 0) {
               dispDate = days + (days === 1 ? ' dia' : ' dias');
             } else if (hours > 0) {
-              dispDate = hours + (hours === 1 ? ' hora' : ' horas');
+              dispDate = hours + (hours === 1 ? ' hr' : ' hrs');
             } else if (minutes > 0){
-              dispDate = minutes + (minutes === 1 ? ' minuto' : ' minutos');
+              dispDate = minutes + (minutes === 1 ? ' min' : ' mins');
             }
             const resultado  =  {
               NotaId: values[key].col_id,
               Pais: values[key].col_pais,
               Titulo: values[key].col_titulo,
+              Resumen: values[key].col_contenido.trim(), //(values[key].col_contenido.length > 180 ? values[key].col_contenido.substring(0,180) : values[key].col_contenido),
               UrlFuente: values[key].col_url_fuente.split('/')[2],
               UrlLink: values[key].col_url_fuente,
               UrlImage: (values[key].col_url_img == '' ? '' : (values[key].col_url_img.indexOf('http') === 0 ? values[key].col_url_img : url+ values[key].col_url_img)),

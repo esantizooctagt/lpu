@@ -16,23 +16,50 @@
     padding-top:3px;
     text-align:left;
 }
-.title-preferences{
-    font-weight: 700;
-}
 .footer-preference{
     --background: black;
+    margin-bottom: 60px;
 }
 .chip-preference{
     border-radius: 5px;
-}
-.chip-color{
-    --background: gray;
-}
-.chip-sel-color{
-    --background: #3CC0FD;
+    margin-right: 0px;
 }
 .button-preference{
-    padding-right: 5px;
+    margin-right: 0px;
+}
+.form-pref{
+    padding-top: 10px;
+}
+.form-pref{
+    text-align: center;
+}
+.ion-button-preferences{
+    height: 50px;
+    font-size: 16px !important;
+}
+.ion-text-menu{
+    font-size: 14px;
+}
+.toolbar-top{
+    margin-bottom: 45px;
+}
+.chip-left-noselect{
+    float: left;
+    --background: gray;
+}
+.chip-left-select{
+    float: left;
+    --background: #3CC0FD;
+}
+.chip-right-noselect{
+    float: right;
+    margin-right: 5px;
+    --background: gray;
+}
+.chip-right-select{
+    float: right;
+    margin-right: 5px;
+    --background: #3CC0FD;
 }
 ion-content{
     --background: black;
@@ -43,4 +70,14 @@ ion-chip{
     margin-right: 15px;
     margin-bottom: 7px;
     margin-top: 7px;
+    //POR SI QUIERE EL MISMO ANCHO EN TODOS LOS BOTONES Y TEXTO CENTRADO
+    // width: 100px;
+    // text-align: center;
+    // justify-content: center;
+}
+h1{
+    margin-top: 60px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 5px;
 }

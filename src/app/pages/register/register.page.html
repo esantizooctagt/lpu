@@ -2,72 +2,76 @@
   <ion-toolbar color="primary">
     <ion-buttons slot="start" size="small" mode="md">
       <ion-back-button></ion-back-button>
+      <ion-button class="header-image" slot="start">
+        <img src="/assets/img/logoLPU.png" class="image-app">
+      </ion-button>
     </ion-buttons>
-    <ion-title class="header-title-logo">
-    </ion-title>
+    <!-- <ion-title class="header-title-logo" slot="start"></ion-title> -->
   </ion-toolbar>
 </ion-header>
 <ion-content fullscreen>
   <ng-container *ngIf="step==1">
-    <ion-text><h2>Registro</h2></ion-text>
+    <ion-text><h2>Regístrate</h2></ion-text>
     <form [formGroup]="registerForm">
       <div class="text-form">
-        <ion-label position="stacked">Nombre Completo <ion-text color="danger">*</ion-text>
-        </ion-label>
-        <ion-input formControlName="Name" required></ion-input>
+        <ion-input placeholder="Nombre completo *"  formControlName="Name" required></ion-input>
+        <div *ngIf="registerForm.get('Name').invalid && (registerForm.get('Name').dirty || registerForm.get('Name').touched)">
+          <label class="text-danger" *ngIf="registerForm.get('Name').errors.pattern">Nombre completo invalido</label>
+        </div>
       </div>
       <!-- <ion-item>
     <ion-label position="stacked">Compañia </ion-label>
     <ion-input></ion-input>
   </ion-item> -->
       <div class="text-form">
-        <ion-label position="stacked">Email <ion-text color="danger">*</ion-text>
-        </ion-label>
-        <ion-input type="email" formControlName="Email" pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required>
-        </ion-input>
+        <ion-input placeholder="Correo electrónico *" type="email" formControlName="Email" pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required></ion-input>
+        <div *ngIf="registerForm.get('Email').invalid && (registerForm.get('Email').dirty || registerForm.get('Email').touched)">
+          <label class="text-danger" *ngIf="registerForm.get('Email').errors.required">Correo electrónico no debe estar vacio</label>
+          <label class="text-danger" *ngIf="registerForm.get('Email').errors.pattern">Correo electrónico invalido</label>
+        </div>
       </div>
       <div class="text-form">
-        <ion-label position="stacked">Password <ion-text color="danger">*</ion-text>
-        </ion-label>
-        <ion-input type="password" formControlName="Password" required></ion-input>
+        <ion-input placeholder="Contraseña" type="password" formControlName="Password" required></ion-input>
+        <div *ngIf="registerForm.get('Password').invalid && (registerForm.get('Password').dirty || registerForm.get('Password').touched)">
+          <label class="text-danger" *ngIf="registerForm.get('Password').errors.pattern">Contraseña invalida</label>
+        </div>
       </div>
       <div class="text-form">
-        <ion-label position="stacked">Fecha de Nacimiento</ion-label>
-        <ion-datetime displayFormat="DD MM YYYY" placeholder="Select Date" formControlName="FechaNacimiento" required>
+        <ion-datetime displayFormat="DD MM YYYY" placeholder="Fecha de nacimiento" formControlName="FechaNacimiento" required>
         </ion-datetime>
+        <div *ngIf="registerForm.get('FechaNacimiento').invalid && (registerForm.get('FechaNacimiento').dirty || registerForm.get('FechaNacimiento').touched)">
+          <label class="text-danger" *ngIf="registerForm.get('FechaNacimiento').errors.pattern">Fecha de nacimiento invalida</label>
+        </div>
       </div>
       <ion-radio-group formControlName="Genero">
-        <ion-label position="stacked" class="ion-padding-start ion-padding-end">Genero</ion-label>
+        <ion-label position="stacked" class="ion-padding-start ion-padding-end">Género</ion-label>
         <ion-label position="stacked">M</ion-label>
         <ion-radio slot="start" value="M" mode="md"></ion-radio>
         <ion-label position="stacked" class="ion-padding-start">F</ion-label>
         <ion-radio slot="start" value="F" mode="md"></ion-radio>
       </ion-radio-group>
-      <ion-button color="secondary" mode="md" expand="full" type="submit" (click)="onSubmit()"
-        class="btn btn-secondary button-accept">Registrar</ion-button>
-        <!-- [disabled]="!registerForm.valid" -->
-      <ion-text color="danger" *ngIf="error != ''">{{error}}</ion-text>
+      <ion-button color="secondary" mode="md" expand="full" type="button" (click)="changeStep()"
+        class="btn btn-secondary button-accept">Continuar</ion-button>
     </form>
   </ng-container>
   <ng-container *ngIf="paquetes$ | async">
     <ng-container *ngIf="step==2">
       <ion-text class="title-paquetes"><h3>Seleccione Paquete a Contratar</h3></ion-text>
-      <form [formGroup]="paquetesForm">
-        <ng-container formArrayName="Paquetes" *ngFor="let paq of paque.controls; let i = index">
-          <ng-container [formGroupName]="i">
-            <ion-card>
-              <ion-card-header>
-                <ion-checkbox mode="ios" class="checkbox-paquete" formControlName="Sel" (ionChange)="setPaquete(i, paq.PaqueteId)"></ion-checkbox>
-                <ion-card-title class="title-paq">{{paq.value.Titulo}}</ion-card-title>
-                <ion-card-subtitle class="subtitle-paq">{{ 'USD $. ' + (paq.value.Precio | number:'2.2-2')}}</ion-card-subtitle>
-              </ion-card-header>
-              <ion-card-content>
-                <div [innerHTML]="paq.value.Descripcion"></div>
-              </ion-card-content>
-            </ion-card>
+          <ng-container *ngFor="let paq of paquetes; let i = index">
+              <ion-card>
+                <ion-card-header>
+                  <ion-checkbox mode="ios" class="checkbox-paquete" [(ngModel)]="paq.Sel" val="{{paq.PaqueteId}}" (ionChange)="setPaquete(i, paq.PaqueteId)"></ion-checkbox>
+                  <ion-card-title class="title-paq">{{paq.Titulo}}</ion-card-title>
+                  <ion-card-subtitle class="subtitle-paq">{{ 'USD $. ' + (paq.Precio | number:'2.2-2')}}</ion-card-subtitle>
+                </ion-card-header>
+                <ion-card-content>
+                  <div [innerHTML]="paq.Descripcion"></div>
+                </ion-card-content>
+              </ion-card>
           </ng-container>
-        </ng-container>
-      </form>
+        <ion-button color="secondary" mode="md" expand="full" type="submit" (click)="onSubmit()"
+          class="btn btn-secondary button-accept">Registrar</ion-button>
+        <ion-text color="danger" *ngIf="error != ''">{{error}}</ion-text>
     </ng-container>
   </ng-container>
 </ion-content>

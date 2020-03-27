@@ -19,7 +19,7 @@ export class NotasService {
   }
 
   getNotasFiltros(tipo, categoria, pais): Observable<any>{
-    return this.http.get<any>(this.apiURL + '/noticias/?tipo='+tipo+'&categoria='+categoria+'&pais=&limit=50')
+    return this.http.get<any>(this.apiURL + '/noticias/?tipo='+tipo+'&categoria='+categoria+'&pais='+pais+'&limit=50')
                     .pipe(catchError(this.errorHandler));
   }
 
@@ -35,6 +35,11 @@ export class NotasService {
 
   delBookmark(formData): Observable<any>{
     return this.http.put<any>(this.apiURL + '/follow', formData)
+                    .pipe(catchError(this.errorHandler));
+  }
+
+  getPaises(): Observable<any>{
+    return this.http.get<any>(this.apiURL + '/paises')
                     .pipe(catchError(this.errorHandler));
   }
 
