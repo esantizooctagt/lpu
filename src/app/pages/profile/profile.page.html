@@ -1,9 +1,10 @@
 <ion-header>
-  <ion-toolbar color="primary">
+  <ion-toolbar mode="ios" color="primary">
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title slot="start" class="header-title-logo">
+    <ion-title>
+      <img src="/assets/img/resize.png" height="40" class="title-img">
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -66,19 +67,21 @@
     </ion-card-content>
   </ion-card>
   <ng-container *ngIf="(paquetes$ | async) && Display == 'plan'">
-    <ion-text class="title-paquetes"><h3>Upgrade Plan</h3></ion-text>
-    <ng-container *ngFor="let paq of paquetes; let i = index">
-      <ion-card>
-        <ion-card-header>
-          <ion-checkbox mode="ios" class="checkbox-paquete" [(ngModel)]="paq.Sel" val="{{paq.PaqueteId}}" (ionChange)="setPaquete(paq.Titulo, paq.PaqueteId)"></ion-checkbox>
-          <ion-card-title class="title-paq">{{paq.Titulo}}</ion-card-title>
-          <ion-card-subtitle class="subtitle-paq">{{ 'USD $. ' + (paq.Precio | number:'2.2-2')}}</ion-card-subtitle>
-        </ion-card-header>
-        <ion-card-content class="paquete-descripcion">
-          <div [innerHTML]="paq.Descripcion"></div>
-        </ion-card-content>
-      </ion-card>
-    </ng-container>
+    <ion-text class="title-paquetes"><h3>Actualizar Plan</h3></ion-text>
+    <ion-radio-group mode="md" [(ngModel)]="paqueteId" (ionChange)="setPaquete($event)">
+      <ng-container *ngFor="let paq of paquetes; let i = index">
+        <ion-card>
+          <ion-card-header>
+            <ion-radio mode="md" value="{{paq.PaqueteId}}"></ion-radio>
+            <ion-card-title class="title-paq" (click)="setPaqueteVal(paq.PaqueteId)">{{paq.Titulo}}</ion-card-title>
+            <ion-card-subtitle class="subtitle-paq" (click)="setPaqueteVal(paq.PaqueteId)">{{ 'USD $. ' + (paq.Precio | number:'2.2-2')}}</ion-card-subtitle>
+          </ion-card-header>
+          <ion-card-content class="paquete-descripcion" (click)="setPaqueteVal(paq.PaqueteId)">
+            <div [innerHTML]="paq.Descripcion"></div>
+          </ion-card-content>
+        </ion-card>
+      </ng-container>
+    </ion-radio-group>
     <ion-button color="secondary" mode="md" expand="full" type="submit" (click)="onUpgradePlan()"
       class="btn btn-secondary button-accept">Actualizar Plan</ion-button>
     <ion-text color="danger" *ngIf="error != ''">{{error}}</ion-text>
@@ -111,5 +114,53 @@
         </ion-row>
       </ion-card-content>
     </ion-card>
+
+    <ion-card class="welcome-card" *ngIf="pref.length > 0 ? pref.indexOf(nota.Categoria)>=0 : true">
+      <img (click)='OpenUrl(nota.UrlLink);' *ngIf="nota.UrlImage != ''" [src]="nota.UrlImage" alt="" />
+      <div class="cintillo" [ngStyle]="{'background-color': nota.CatColor}">{{nota.Categoria}}</div>
+      <ion-card-content>
+        <ion-card-header>
+          <ion-row>
+            <ion-col class="ion-pais ion-no-padding" size="12">
+              <div class="ion-subtitle-pais" (click)='OpenUrl(nota.UrlLink);'>{{ nota.Pais +' - '}}</div>
+              <div class="ion-fuente" (click)='OpenUrl(nota.UrlLink);'>{{' ' + nota.UrlFuente}}</div>
+              <div class="ion-fecha">{{ nota.Fecha }}</div>
+            </ion-col>
+            <!-- <ion-col class="ion-fecha ion-no-padding" size="2">
+              <ion-text class="ion-fuente">{{ nota.Fecha }}</ion-text>
+            </ion-col> -->
+          </ion-row>
+          <ion-row>
+            <ion-col class="ion-no-padding" size="12">
+              <ion-card-title (click)='OpenUrl(nota.UrlLink);'>{{nota.Titulo}}</ion-card-title>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col class="ion-no-padding" size="12">
+              <ion-text class="ion-resumen">{{nota.Resumen}}</ion-text>
+            </ion-col>
+          </ion-row>
+        </ion-card-header>
+        <ion-row class="card-actions">
+          <ion-col *ngIf="nota.Sel === 0" class="ion-no-padding" size="4" (click)="SaveBookmark(nota);">
+            <ion-icon class="icon" src="/assets/img/bookmark.svg" (click)="SaveBookmark(nota);"></ion-icon>
+          </ion-col>
+          <ion-col *ngIf="nota.Sel === 1" class="ion-no-padding" size="4" (click)="DelBookmark(nota);">
+            <ion-icon class="icon" src="/assets/img/bookmark02.svg" (click)="DelBookmark(nota);"></ion-icon>
+          </ion-col>
+          <ion-col class="ion-center ion-no-padding" size="4">
+            <ion-icon class="icon icon-fire" src="/assets/img/flame.svg"></ion-icon>
+            <span class="icon-text space-text">{{ nota.Ranking }}</span>
+          </ion-col>
+          <ion-col class="ion-center ion-no-padding" size="4" (click)="SharedLink(nota);">
+            <ion-icon class="icon icon-shared" src="/assets/img/share.svg" (click)="SharedLink(nota);">
+            </ion-icon>
+            <span class="icon-text space-text" (click)="SharedLink(nota);">Share</span>
+          </ion-col>
+        </ion-row>
+      </ion-card-content>
+    </ion-card>
+    
+    <ion-text class="follow-text" *ngIf="nofollows != ''">{{nofollows}}</ion-text>
   </ion-grid>
 </ion-content>

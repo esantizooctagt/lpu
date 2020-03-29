@@ -7,7 +7,9 @@
     padding-top: 3px;
     padding-bottom: 3px;
     padding-left: 2px;
-    width: 95px;
+    // width: 90px;
+    width: auto;
+    display: inline-block;
     -webkit-box-flex: 1;
     flex: 1;
     position: absolute;
@@ -18,47 +20,6 @@
   color: white;
   height: 25px;
 }
-// .content-text{
-//     padding-top: 3px;
-//     padding-bottom: 3px;
-//     overflow: hidden;
-//     display: inline-block;
-//     animation: right_to_left 18s ease;
-//     white-space: nowrap;
-// }
-// .marquee{
-//   background: #FAFAFA;
-//   border: 1px solid #DDD;
-//   position: relative;
-//   // margin: 0px auto;
-//   vertical-align: middle;
-//   width: calc(100% - 155px);
-//   float: left;
-//   overflow: hidden;
-//   white-space: nowrap;
-//   margin: 0 auto;
-//   box-sizing: border-box;
-// }
-// .marquee ul:first-child {
-//   animation: marquee 70s linear infinite;
-// }
-// .marquee ul, .marquee ul li {
-//   margin: 0px;
-//   padding: 0px;
-//   display: inline-block;
-// }
-// ul {
-//   list-style: disc;
-// }
-// @keyframes right_to_left {
-//     from {
-//       margin-left: 100%;
-//     }
-//     to {
-//       margin-left: -150%;
-//     }
-//   }
-
 .marquee{
   overflow: hidden;
   white-space: nowrap;

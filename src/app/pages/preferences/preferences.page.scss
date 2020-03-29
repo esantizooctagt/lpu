@@ -1,20 +1,5 @@
-.header-title-logo{
-    display: inline-block;
-    height: 40px;
-    background: url('/assets/img/resize.png') no-repeat 10px center/ 95px 40px;
-}
-.header-title-logo-01{
-    display: inline-block;
-    height: 40px;
-    background: url('/assets/img/resize.png') no-repeat 100px center/ 95px 40px;
-}
 .title-img {
-    position: absolute;
-    width: 100%;
-    left: 0;
-    bottom: 0;
-    padding-top:3px;
-    text-align:left;
+    margin-top: 3px;
 }
 .footer-preference{
     --background: black;
@@ -74,6 +59,12 @@ ion-chip{
     // width: 100px;
     // text-align: center;
     // justify-content: center;
+}
+ion-footer{
+    background-color: black;
+}
+ion-header{
+    background-color: black;
 }
 h1{
     margin-top: 60px;

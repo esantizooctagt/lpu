@@ -4,8 +4,9 @@ import { UserService } from '@services/user.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription, throwError, Observable } from 'rxjs';
-import { ToastController } from '@ionic/angular';
+import { ToastController, LoadingController } from '@ionic/angular';
 import { map, catchError } from 'rxjs/operators';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-register',
@@ -18,15 +19,19 @@ export class RegisterPage implements OnInit {
   step: number = 1;
   paquetes$: Observable<any>;
   paquetes: any [];
-  paqueteId: string ='';
+  paqueteId: number =0;
   valueToken: string = '';
   userCod: number;
+  fechaMin: string;
+  fechaMax: string;
+  loading: any;
   
   constructor(
     private fb: FormBuilder,
     private userService: UserService,
     private storage: Storage,
     private router: Router,
+    public loadingController: LoadingController,
     public toastController: ToastController
   ) { }
 
@@ -52,6 +57,11 @@ export class RegisterPage implements OnInit {
   });
   
   ngOnInit() {
+    var date = new Date();
+    this.fechaMin = formatDate(date.setFullYear(date.getFullYear()- 90) && date,'yyyy-MM-dd','en-US');
+    var date2 = new Date()
+    this.fechaMax = formatDate(date2.setFullYear(date2.getFullYear()- 17) && date2,'yyyy-MM-dd','en-US');
+
     this.paquetes$ =this.userService.getPaquetes().pipe(
       map(data => {
         let result = JSON.stringify(data).replace(',"error":false', '');
@@ -71,8 +81,16 @@ export class RegisterPage implements OnInit {
     );
   }
 
-  onSubmit(){
-    if (this.paqueteId == '') { return; }
+  async presentLoading() {
+    this.loading = await this.loadingController.create({
+      message: 'Registrando usuario...',
+      duration: 3000
+    });
+    await this.loading.present();
+  }
+
+  async onSubmit(){
+    if (this.paqueteId == 0) { return; }
     const userData = {
       nombre: this.registerForm.controls.Name.value,
       correo: this.registerForm.controls.Email.value,
@@ -83,8 +101,10 @@ export class RegisterPage implements OnInit {
       usuario: userData,
       paquete: this.paqueteId
     }
+    await this.presentLoading();
     this.subLogin = this.userService.postUser(formData).subscribe(async res => {
       if (res.error === true){
+        this.loading.dismiss();
         this.error = res.msg;
       } else {
         this.error = '';
@@ -98,6 +118,7 @@ export class RegisterPage implements OnInit {
           Paquete: res.user.paquete,
           Follows: res.user.follows
         }
+        this.loading.dismiss();
         this.valueToken = res.token;
         this.userCod = res.user.ID;
         this.storage.set('user', data);
@@ -111,14 +132,9 @@ export class RegisterPage implements OnInit {
     this.step = 2;
   }
 
-  setPaquete(index: number, paqueteId: string){
-    this.paqueteId = paqueteId;
-    for (let i = 0; i < this.paquetes.length; i++) {
-      if (this.paquetes[i].PaqueteId != this.paqueteId){
-        this.paquetes[i].Sel= false;
-      } else {
-        this.paquetes[i].Sel = true;
-      }
+  setPaquete(paqId: any){
+    if (paqId.detail.value != undefined && paqId.detail.value != 0){
+      this.paqueteId = paqId.detail.value;
     }
   }
 

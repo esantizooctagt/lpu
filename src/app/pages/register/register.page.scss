@@ -67,28 +67,15 @@ ion-radio{
 ion-datetime{
     color:white;
     font-size: smaller;
-    width: 180px;
+    // width: 180px;
     left: 14px;
     background: var(--ion-color-primary, #3880ff) !important;
+    margin-right: 15px;
+    width: 90%;
+    height: 32px;
 }
-.header-title-logo{
-    display: inline-block;
-    height: 40px;
-    background: url('/assets/img/logoLPU.png') no-repeat center/40px;
-    // position: absolute;
-    // top: 5px;
-    // left: 60px;
-    padding-left: 0px;
-    padding-right: 0px;
-}
-.header-image{
-    // display: inline-block;
-    // height: 40px;
-    padding-left: 0px;
-    padding-right: 0px;
-}
-.image-app{
-    height: 30px;
+.title-img {
+    margin-top: 3px;
 }
 .button-accept{
     margin-top: 20px;
@@ -98,6 +85,7 @@ ion-datetime{
 .title-paquetes h3{
     padding-left: 10px;
     font-weight: 800;
+    color: white;
 }
 .checkbox-paquete{
     position: absolute;

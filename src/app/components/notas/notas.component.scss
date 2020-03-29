@@ -2,23 +2,22 @@ ion-icon {
     font-size: 24px;
 }
 ion-card-content{
-    padding: 8px 8px 8px 8px;
+    padding: 0px 8px 8px 8px;
 }
 ion-card-header {
     padding: 0;
 }
-ion-card-subtitle{
-    padding-top: 7px;
-    color: cornflowerblue;
-}
 ion-card-title{
-    font-size: medium;
+    // font-size: medium;
+    font-size: 16px;
     color: black;
     font-family: 'Georgia Pro Cond Semibold', sans-serif !important;
-    padding-top: 5px;
+    padding-top: 8px;
     overflow: hidden;
-    height: 3em;
-    line-height: 1.4em;
+    // height: 2.6em;
+    // line-height: 1.2em;
+    height: 52px;
+    line-height: 22px;
     text-overflow: ellipsis;
     display: block;
     display: -webkit-box;
@@ -60,7 +59,6 @@ ion-card{
 .icon-shared {
     color: darkgrey;
     padding-left: 15px;
-    // cursor: pointer;
 }
 .icon-text{
     display: inline-block;
@@ -83,15 +81,29 @@ ion-card{
     // cursor: pointer;
 }
 .ion-subtitle-pais{
-    text-transform: uppercase;
+    text-transform: capitalize;
+    padding-top: 7px;
+    color: cornflowerblue;
+    font-family: var(--ion-font-family,inherit);
+    font-size: 12px;
+    font-weight: 700;
+    display: inline-block;
 }
 .ion-fuente{
     text-transform: lowercase;
     color: cornflowerblue;
-    font-size: smaller;
+    font-size: 12px;
+    display: inline;
 }
 .ion-fecha{
-    text-align: right;
+    // text-align: right;
+    float: right;
+    text-transform: lowercase;
+    color: cornflowerblue;
+    font-size: 12px;
+    position: absolute;
+    bottom: -4px;
+    right: 0px;
 }
 .ion-pais{
     height: 20px;
@@ -104,16 +116,19 @@ ion-card{
     text-overflow: ellipsis;
     word-wrap: break-word;
     overflow: hidden;
-    max-height: 4.1em;
-    line-height: 1.4em;
-    font-size: small;
+    // max-height: 4.1em;
+    // line-height: 1.4em;
+    // font-size: small;
+    font-size: 13px;
+    max-height: 42px;
+    line-height: 19px;
     color: gray;
     font-family: var(--ion-font-family,inherit);
     text-overflow: ellipsis;
     display: -webkit-box;
     max-width: 100%;
     margin: 0 auto;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
 }
 .cintillo{
@@ -124,4 +139,5 @@ ion-card{
     padding-left: 5px;
     padding-top: 2px;
     padding-bottom: 17px;
+    font-size: 14px;
 }

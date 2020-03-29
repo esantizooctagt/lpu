@@ -255,9 +255,9 @@ export class NotasComponent implements OnInit {
             } else if (days > 0) {
               dispDate = days + (days === 1 ? ' dia' : ' dias');
             } else if (hours > 0) {
-              dispDate = hours + (hours === 1 ? ' hora' : ' horas');
+              dispDate = hours + (hours === 1 ? ' hr' : ' hrs');
             } else if (minutes > 0){
-              dispDate = minutes + (minutes === 1 ? ' minuto' : ' minutos');
+              dispDate = minutes + (minutes === 1 ? ' min' : ' mins');
             }
 
             const resultado  =  {

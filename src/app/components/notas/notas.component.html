@@ -1,25 +1,19 @@
 <ion-grid class="ion-no-padding" *ngIf="error == ''">
   <ng-container *ngFor="let nota of notas$ | async; trackBy: trackById">
     <ion-card class="welcome-card" *ngIf="pref.length > 0 ? pref.indexOf(nota.Categoria)>=0 : true">
-      <!-- <div *ngIf="sec===''" class="card-category" [ngStyle]="{'background-color': nota.CatColor}">{{nota.Categoria}}
-      </div> -->
-      <!-- <div *ngIf="sec!=''" class="card-category">{{nota.Categoria}}</div> -->
       <img (click)='OpenUrl(nota.UrlLink);' *ngIf="nota.UrlImage != ''" [src]="nota.UrlImage" alt="" />
       <div class="cintillo" [ngStyle]="{'background-color': nota.CatColor}">{{nota.Categoria}}</div>
       <ion-card-content>
         <ion-card-header>
           <ion-row>
             <ion-col class="ion-pais ion-no-padding" size="12">
-              <ion-card-subtitle class="ion-subtitle-pais" (click)='OpenUrl(nota.UrlLink);'>{{ nota.Pais +'  '}}</ion-card-subtitle>
+              <div class="ion-subtitle-pais" (click)='OpenUrl(nota.UrlLink);'>{{ nota.Pais +' - '}}</div>
+              <div class="ion-fuente" (click)='OpenUrl(nota.UrlLink);'>{{' ' + nota.UrlFuente}}</div>
+              <div class="ion-fecha">{{ nota.Fecha }}</div>
             </ion-col>
-          </ion-row>
-          <ion-row>
-            <ion-col class="ion-no-padding" size="8">
-              <ion-text class="ion-fuente" (click)='OpenUrl(nota.UrlLink);'>{{nota.UrlFuente}}</ion-text>
-            </ion-col>
-            <ion-col class="ion-fecha ion-no-padding">
+            <!-- <ion-col class="ion-fecha ion-no-padding" size="2">
               <ion-text class="ion-fuente">{{ nota.Fecha }}</ion-text>
-            </ion-col>
+            </ion-col> -->
           </ion-row>
           <ion-row>
             <ion-col class="ion-no-padding" size="12">
@@ -33,20 +27,20 @@
           </ion-row>
         </ion-card-header>
         <ion-row class="card-actions">
-          <ion-col *ngIf="nota.Sel === 0" class="ion-no-padding" size="4">
+          <ion-col *ngIf="nota.Sel === 0" class="ion-no-padding" size="4" (click)="SaveBookmark(nota);">
             <ion-icon class="icon" src="/assets/img/bookmark.svg" (click)="SaveBookmark(nota);"></ion-icon>
           </ion-col>
-          <ion-col *ngIf="nota.Sel === 1" class="ion-no-padding" size="4">
+          <ion-col *ngIf="nota.Sel === 1" class="ion-no-padding" size="4" (click)="DelBookmark(nota);">
             <ion-icon class="icon" src="/assets/img/bookmark02.svg" (click)="DelBookmark(nota);"></ion-icon>
           </ion-col>
           <ion-col class="ion-center ion-no-padding" size="4">
             <ion-icon class="icon icon-fire" src="/assets/img/flame.svg"></ion-icon>
             <span class="icon-text space-text">{{ nota.Ranking }}</span>
           </ion-col>
-          <ion-col class="ion-center ion-no-padding" size="4">
+          <ion-col class="ion-center ion-no-padding" size="4" (click)="SharedLink(nota);">
             <ion-icon class="icon icon-shared" src="/assets/img/share.svg" (click)="SharedLink(nota);">
             </ion-icon>
-            <span class="icon-text space-text">Share</span>
+            <span class="icon-text space-text" (click)="SharedLink(nota);">Share</span>
           </ion-col>
         </ion-row>
       </ion-card-content>

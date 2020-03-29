@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { Router } from '@angular/router';
-import { ToastController, NavController } from '@ionic/angular';
+import { ToastController, NavController, LoadingController } from '@ionic/angular';
 import { UserService } from '@app/services/user.service';
 import { Observable, throwError, Subscription } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
@@ -17,9 +17,10 @@ export class ProfilePage implements OnInit {
   paquetes$: Observable<any>;
   subPaquete: Subscription;
   paquetes: any [];
-  paqueteId: string ='';
+  paqueteId: number = 0;
   paqName: string='';
 
+  loading: any;
   data: any;
   user: any;
   follows: any;
@@ -33,6 +34,7 @@ export class ProfilePage implements OnInit {
   paquete: string = '';
   Display: string = 'plan';
   error: string = '';
+  nofollows: string = '';
   valueToken: string ='';
   userCod: string ='';
   notifications: boolean = true;
@@ -59,6 +61,7 @@ export class ProfilePage implements OnInit {
     private router: Router,
     private userService: UserService,
     public toastController: ToastController,
+    public loadingController: LoadingController,
     private iab: InAppBrowser,
     public nav: NavController
   ) { }
@@ -130,7 +133,7 @@ export class ProfilePage implements OnInit {
             return throwError(err | err.message);
           })
         );
-
+        this.nofollows = '';
         if (this.follows != undefined){
           for (const key of Object.keys(this.follows)) {   
               var pubDate = new Date(this.follows[key].fecha);
@@ -154,16 +157,26 @@ export class ProfilePage implements OnInit {
               } else if (days > 0) {
                 dispDate = days + (days === 1 ? ' dia' : ' dias');
               } else if (hours > 0) {
-                dispDate = hours + (hours === 1 ? ' hora' : ' horas');
+                dispDate = hours + (hours === 1 ? ' hr' : ' hrs');
               } else if (minutes > 0){
-                dispDate = minutes + (minutes === 1 ? ' minuto' : ' minutos');
+                dispDate = minutes + (minutes === 1 ? ' min' : ' mins');
               }
 
             this.nota.push({ "NotaId": this.follows[key].ID, "Titulo": this.follows[key].titulo, "UrlImage": this.follows[key].imagen, "UrlLink": this.follows[key].link, "UrlFuente": this.follows[key].link.split('/')[2], "Fecha": dispDate});
           }
+        } else {
+          this.nofollows = "No tiene notas almacenadas";
         }
       }
     });
+  }
+
+  async presentLoading() {
+    this.loading = await this.loadingController.create({
+      message: 'Actualizando Plan...',
+      duration: 3000
+    });
+    await this.loading.present();
   }
 
   OpenUrl(link: string){
@@ -188,19 +201,23 @@ export class ProfilePage implements OnInit {
     this.storage.set('notif', this.notifications);
   }
 
-  setPaquete(name: string, paqueteId: string){
-    this.paqueteId = paqueteId;
-    this.paqName = (name == 'basic' ? 'basico' : name);
-    for (let i = 0; i < this.paquetes.length; i++) {
-      if (this.paquetes[i].PaqueteId != this.paqueteId){
-        this.paquetes[i].Sel= false;
-      } else {
-        this.paquetes[i].Sel = true;
-      }
+  setPaquete(paqId: any){
+    if (paqId.detail.value != undefined && paqId.detail.value != 0){
+      this.paqName = this.paquetes.filter(res => res.PaqueteId == paqId.detail.value)[0].Titulo.toLowerCase();
+      this.paqName = (this.paqName == 'basic' ? 'basico' : this.paqName);
     }
   }
 
-  onUpgradePlan(){
+  setPaqueteVal(paqId){
+    this.paqueteId = paqId;
+    if (this.paqueteId != undefined && this.paqueteId != 0){
+      this.paqName = this.paquetes.filter(res => res.PaqueteId == this.paqueteId)[0].Titulo.toLowerCase();
+      this.paqName = (this.paqName == 'basic' ? 'basico' : this.paqName);
+    }
+  }
+
+  async onUpgradePlan(){
+    if (this.paqueteId == undefined || this.paqueteId == 0) {return;}
     const userData = {
       correo: this.email
     }
@@ -210,15 +227,17 @@ export class ProfilePage implements OnInit {
       token: this.valueToken,
       paquete: this.paqueteId
     }
+    await this.presentLoading();
     this.subPaquete = this.userService.postPaqueteUser(this.userCod, formData).subscribe(async res => {
       if (res.error === true){
         this.error = res.msg;
       } else {
+        this.loading.dismiss();
         this.error = '';
         this.data.Paquete = this.paqName;
         this.storage.set('user', this.data);
         this.paqName = '';
-        this.paqueteId = '';
+        this.paqueteId = 0;
         await this.presentToast('Plan actualizado con éxito', 200);
       }
     });

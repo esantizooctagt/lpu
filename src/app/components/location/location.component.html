@@ -1,12 +1,10 @@
-<ion-content>
-  <div *ngFor="let region of regiones">
-    <h5>{{region.region}}</h5>
-    <ion-list>
-      <ng-container class="">
-        <ion-item *ngFor="let pais of region.paises" (click)="selectLocation(pais.PaisId)">
-          {{pais.Descripcion}}
-        </ion-item>
-      </ng-container>
-    </ion-list>
-  </div>
-</ion-content>
+<div *ngFor="let region of regiones">
+  <h5>{{region.region}}</h5>
+  <ion-list>
+    <ng-container class="">
+      <ion-item *ngFor="let pais of region.paises" (click)="selectLocation(pais.PaisId)">
+        {{pais.Descripcion}}
+      </ion-item>
+    </ng-container>
+  </ion-list>
+</div>

@@ -1,13 +1,15 @@
 <ng-container *ngIf="categories$ | async">
   <ion-header>
-    <ion-toolbar color="primary" class="toolbar-top">
+    <ion-toolbar mode="ios" color="primary" class="toolbar-top">
+      <ion-title *ngIf="prefSet">
+        <img src="/assets/img/resize.png" height="40" class="title-img">
+      </ion-title>
+      <ion-title *ngIf="!prefSet">
+        <img src="/assets/img/resize.png" height="40" class="title-img">
+      </ion-title>
       <ion-buttons *ngIf="prefSet" slot="start">
         <ion-menu-button></ion-menu-button>
       </ion-buttons>
-      <ion-title *ngIf="prefSet" slot="start" class="header-title-logo-01">
-      </ion-title>
-      <ion-title *ngIf="!prefSet" slot="start" class="header-title-logo">
-      </ion-title>
       <ion-buttons *ngIf="!userLog" slot="end" class="button-preference">
         <ion-button color="secondary" class="ion-text-menu ion-text-capitalize"
           [routerLink]="['/login']">
