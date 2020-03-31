@@ -208,14 +208,6 @@ export class ProfilePage implements OnInit {
     }
   }
 
-  setPaqueteVal(paqId){
-    this.paqueteId = paqId;
-    if (this.paqueteId != undefined && this.paqueteId != 0){
-      this.paqName = this.paquetes.filter(res => res.PaqueteId == this.paqueteId)[0].Titulo.toLowerCase();
-      this.paqName = (this.paqName == 'basic' ? 'basico' : this.paqName);
-    }
-  }
-
   async onUpgradePlan(){
     if (this.paqueteId == undefined || this.paqueteId == 0) {return;}
     const userData = {

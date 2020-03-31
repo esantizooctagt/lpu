@@ -18,8 +18,8 @@ export class NotasService {
                     .pipe(catchError(this.errorHandler));
   }
 
-  getNotasFiltros(tipo, categoria, pais): Observable<any>{
-    return this.http.get<any>(this.apiURL + '/noticias/?tipo='+tipo+'&categoria='+categoria+'&pais='+pais+'&limit=50')
+  getNotasFiltros(tipo, categoria, pais, page): Observable<any>{
+    return this.http.get<any>(this.apiURL + '/noticias/?tipo=pais&categoria='+categoria+'&pais='+pais+'&limit=20&page='+page)
                     .pipe(catchError(this.errorHandler));
   }
 

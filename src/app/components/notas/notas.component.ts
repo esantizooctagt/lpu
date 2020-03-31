@@ -1,11 +1,12 @@
-import { Component, OnInit, Input, SimpleChange } from '@angular/core';
-import { LoadingController, ToastController } from '@ionic/angular';
+import { Component, OnInit, Input, SimpleChange, ViewChild } from '@angular/core';
+import { ToastController, LoadingController } from '@ionic/angular';
 import { NotasService } from '@services/notas.service';
 import { Storage } from '@ionic/storage';
 import { InAppBrowser, InAppBrowserOptions } from '@ionic-native/in-app-browser/ngx';
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
-import { map, filter, catchError } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
 import { Observable, throwError, Subscription } from 'rxjs';
+import { IonInfiniteScroll } from '@ionic/angular';
 
 @Component({
   selector: 'app-notas',
@@ -17,11 +18,16 @@ export class NotasComponent implements OnInit {
   @Input() loc: string;
   @Input() sec: string;
   @Input() pais: string;
+  @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
 
-  notas$ : Observable<any>;
+  page = 1;
+  maximunPages = 6;
+  valores: any [] =[];
+  notas$: Observable<any>;
   bookmark: Subscription;
   bookmarkDel: Subscription;
   loading: any;
+  searchResult: string ='';
   error: string = '';
   token: string = '';
   UserId: string = '';
@@ -32,6 +38,7 @@ export class NotasComponent implements OnInit {
   Gustos: string = '';
   Follows: any;
   pref: any[]=[];
+  pagination: boolean= false;
   options : InAppBrowserOptions = {
     location : 'yes',//Or 'no' 
     hidden : 'no', //Or  'yes'
@@ -222,15 +229,51 @@ export class NotasComponent implements OnInit {
     return item.NotaId;
   }
 
-  async ngOnChanges(changes: {[propertyName: string]: SimpleChange}){
+  ngOnChanges(changes: {[propertyName: string]: SimpleChange}){
     this.error = '';
+    this.pagination = false;
     if (changes['search'] != undefined){
+      if (this.searchResult != this.search){
+        this.page = 1;
+        this.valores = [];
+      }
+      if(this.infiniteScroll){
+        this.infiniteScroll.disabled = true;
+      }
+      this.searchResult = this.search;
+      this.loadNotas(this.search);
+    }
+
+    if (changes['sec'] != undefined || changes['loc'] != undefined || changes['pais'] != undefined){
+      if(this.infiniteScroll){
+        this.infiniteScroll.disabled = false;
+      }
+      this.valores=[];
+      this.page = 1;
+      this.searchResult = '';
+      this.loadNotas('');
+    }
+  }
+
+  searchNota(id: number): number{
+    if (this.Follows != undefined){
+      for (const key of Object.keys(this.Follows)) {  
+        if (this.Follows[key].ID === id){
+          return 1;
+        }
+      }
+    }
+    return 0;
+  }
+
+  async loadNotas(searchValue: string, event?){
+    if (searchValue != ''){
       await this.presentLoading();
       this.notas$ = this.notasService.getNotas(this.search).pipe(
         map(data => {
           let result = JSON.stringify(data).replace(',"error":false','');
           let values = JSON.parse(result);
-          let valores =[];
+          var i = 0;
           for (const key of Object.keys(values)) {
             let url = values[key].col_url_fuente.split('/')[0] + '//' + values[key].col_url_fuente.split('/')[1] + '/' + values[key].col_url_fuente.split('/')[2];
             var pubDate = new Date(values[key].col_fecha_publicacion);
@@ -274,13 +317,14 @@ export class NotasComponent implements OnInit {
               Fecha: dispDate, //values[key].col_fecha_publicacion.split(' ')[0]
               Sel: this.searchNota(values[key].col_id)
             }
-            valores.push(resultado);
+            this.valores.push(resultado);
+            i++;
           }
           this.loading.dismiss();
-          if (valores.length === 0){
+          if (i === 0){
             this.error = "No se encontraron resultados en su busqueda";
           }
-          return valores;
+          return this.valores;
         }),
         catchError(err => {
           this.loading.dismiss();
@@ -288,16 +332,17 @@ export class NotasComponent implements OnInit {
           return throwError(err | err.message);
         })
       );
-    }
-
-    if (changes['sec'] != undefined || changes['loc'] != undefined || changes['pais'] != undefined){
-      await this.presentLoading();
-      this.notas$ = this.notasService.getNotasFiltros((this.loc == null ? '' : (this.pais != '' ? 'pais' : this.loc)), (this.sec == null ? '': this.sec), (this.pais == null ? '' : this.pais)).pipe(
+    } else {
+      this.searchResult = '';
+      if (!this.pagination) {
+        await this.presentLoading();
+      }
+      this.notas$ = this.notasService.getNotasFiltros((this.loc == null ? '' : (this.pais != '' ? 'pais' : this.loc)), (this.sec == null ? '': this.sec), (this.pais == null ? '' : this.pais), this.page).pipe(
         map(data => {
           let result = JSON.stringify(data).replace(',"error":false','');
           let result2 = result.replace('"error":false','');
           let values = JSON.parse(result2);
-          let valores =[];
+          var i = 0;
           for (const key of Object.keys(values)) {
             let url = values[key].col_url_fuente.split('/')[0] + '//'+ values[key].col_url_fuente.split('/')[1] +values[key].col_url_fuente.split('/')[2];
             var pubDate = new Date(values[key].col_fecha_publicacion);
@@ -340,16 +385,29 @@ export class NotasComponent implements OnInit {
               Fecha: dispDate, //values[key].col_fecha_publicacion.split(' ')[0]
               Sel: this.searchNota(values[key].col_id)
             }
-            valores.push(resultado);
+            this.valores.push(resultado);
+            i++;
           }
-          this.loading.dismiss();
-          if (valores.length === 0){
+          if (!this.pagination) {
+            this.loading.dismiss();
+            this.pagination = false;
+          }
+          if (i === 0){
             this.error = "No se encontraron resultados en su busqueda";
           }
-          return valores;
+          if (event){
+            event.target.complete();
+          }
+          if (i < 20){
+            event.target.disabled = true;
+          }
+          return this.valores;
         }),
         catchError(err => {
-          this.loading.dismiss();
+          if (!this.pagination) {
+            this.loading.dismiss();
+            this.pagination = false;
+          }
           this.error = 'Error en la carga de datos intente de nuevo';
           return throwError(err | err.message);
         })
@@ -357,15 +415,17 @@ export class NotasComponent implements OnInit {
     }
   }
 
-  searchNota(id: number): number{
-    if (this.Follows != undefined){
-      for (const key of Object.keys(this.Follows)) {  
-        if (this.Follows[key].ID === id){
-          return 1;
-        }
-      }
+  loadMore(event){
+    this.pagination = true;
+    this.page++;
+    if (this.searchResult != '') {
+      event.target.disabled = true;
     }
-    return 0;
+
+    this.loadNotas(this.searchResult, event);
+    if (this.page == this.maximunPages){
+      event.target.disabled = true;
+    }
   }
 
 }
